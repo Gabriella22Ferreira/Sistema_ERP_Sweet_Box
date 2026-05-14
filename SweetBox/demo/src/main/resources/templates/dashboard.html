@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SweetBox</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <nav class="navbar">
+            <div class="navbar-content">
+                <a href="#" class="navbar-brand">
+                    <div class="navbar-logo">🍬</div>
+                    <div class="navbar-brand-text"><h1>SweetBox</h1><p>Sistema de Gestão</p></div>
+                </a>
+                <ul class="navbar-menu" id="navMenu"></ul>
+                <div class="navbar-user">
+                    <div class="navbar-user-info" id="userInfo"></div>
+                    <div class="navbar-avatar">👤</div>
+                    <button class="btn-logout" onclick="logout()"><i data-lucide="log-out" class="icon"></i></button>
+                </div>
+            </div>
+        </nav>
+        <main class="main-content">
+            <div class="container">
+                <div class="flex-between mb-4">
+                    <div>
+                        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Dashboard</h2>
+                        <p style="color: var(--muted-foreground);">Visão geral da sua loja</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn" id="btnDiario" onclick="setPeriodo('diario')">Diário</button>
+                        <button class="btn" id="btnMensal" onclick="setPeriodo('mensal')">Mensal</button>
+                        <button class="btn" id="btnAnual" onclick="setPeriodo('anual')">Anual</button>
+                    </div>
+                </div>
+                <div class="stats-grid" id="statsCards"></div>
+                <div class="grid grid-cols-sm-2 gap-3 mb-4">
+                    <div class="card">
+                        <h3 class="card-title" id="tituloVendas">Vendas por Hora</h3>
+                        <canvas id="chartVendas"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title" id="tituloReceita">Receita por Hora</h3>
+                        <canvas id="chartReceita"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="flex gap-2 mb-3">
+                        <i data-lucide="award" class="icon-lg" style="color: var(--primary);"></i>
+                        <h3 class="card-title" id="tituloProdutos">Produtos Mais Vendidos</h3>
+                    </div>
+                    <div id="produtosMaisVendidos"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>verificarPermissaoGestor(); carregarPagina();</script>
+</body>
+</html>

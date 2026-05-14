@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - SweetBox</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <nav class="navbar">
+            <div class="navbar-content">
+                <a href="#" class="navbar-brand">
+                    <div class="navbar-logo">🍬</div>
+                    <div class="navbar-brand-text"><h1>SweetBox</h1><p>Sistema de Gestão</p></div>
+                </a>
+                <ul class="navbar-menu" id="navMenu"></ul>
+                <div class="navbar-user">
+                    <div class="navbar-user-info" id="userInfo"></div>
+                    <div class="navbar-avatar">👤</div>
+                    <button class="btn-logout" onclick="logout()"><i data-lucide="log-out" class="icon"></i></button>
+                </div>
+            </div>
+        </nav>
+        <main class="main-content">
+            <div class="container">
+                <div class="flex-between mb-4">
+                    <div>
+                        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Relatórios</h2>
+                        <p style="color: var(--muted-foreground);">Análise de vendas e desempenho</p>
+                    </div>
+                    <select id="periodo" class="form-select" style="width: auto;" onchange="atualizarRelatorios()">
+                        <option value="7dias">Últimos 7 dias</option>
+                        <option value="30dias">Últimos 30 dias</option>
+                        <option value="todos">Todos os períodos</option>
+                    </select>
+                </div>
+                <div class="stats-grid mb-4" id="statsCards"></div>
+                <div class="grid grid-cols-sm-2 gap-3 mb-4">
+                    <div class="card">
+                        <h3 class="card-title mb-3">Vendas por Dia</h3>
+                        <canvas id="chartVendas"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title mb-3">Produtos Mais Vendidos</h3>
+                        <canvas id="chartProdutos"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title mb-3">Últimas Vendas</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Itens</th>
+                                    <th style="text-align: right;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaVendas"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/auth.js"></script>
+    <script src="js/relatorios.js"></script>
+    <script>verificarPermissaoGestor(); carregarPagina();</script>
+</body>
+</html>

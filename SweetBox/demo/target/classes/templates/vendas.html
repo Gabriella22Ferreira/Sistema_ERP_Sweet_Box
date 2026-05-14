@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendas - SweetBox</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <nav class="navbar">
+            <div class="navbar-content">
+                <a href="#" class="navbar-brand">
+                    <div class="navbar-logo">🍬</div>
+                    <div class="navbar-brand-text">
+                        <h1>SweetBox</h1>
+                        <p>Sistema de Gestão</p>
+                    </div>
+                </a>
+                <ul class="navbar-menu" id="navMenu"></ul>
+                <div class="navbar-user">
+                    <div class="navbar-user-info" id="userInfo"></div>
+                    <div class="navbar-avatar" id="userAvatar">👤</div>
+                    <button class="btn-logout" onclick="logout()" title="Sair">
+                        <i data-lucide="log-out" class="icon"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <main class="main-content">
+            <div class="container">
+                <div class="flex-between mb-4">
+                    <div>
+                        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Ponto de Venda</h2>
+                        <p style="color: var(--muted-foreground);">Realize vendas e gerencie o carrinho</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="abrirHistorico()">
+                        <i data-lucide="history" class="icon"></i> Histórico
+                    </button>
+                </div>
+                <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+                    <div>
+                        <div class="card mb-3">
+                            <input type="text" id="busca" class="form-input" placeholder="Buscar produtos..." oninput="filtrarProdutos()">
+                        </div>
+                        <div class="grid grid-cols-sm-2 gap-2" id="listaProdutos"></div>
+                    </div>
+                    <div>
+                        <div class="card" style="position: sticky; top: 1rem;">
+                            <div class="flex gap-2 mb-3">
+                                <i data-lucide="shopping-cart" class="icon-lg" style="color: var(--primary);"></i>
+                                <h3 style="font-size: 1.25rem; font-weight: 700;">Carrinho</h3>
+                            </div>
+                            <div id="carrinhoItens" style="max-height: 400px; overflow-y: auto;"></div>
+                            <div id="carrinhoFooter" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                                <div class="flex-between mb-3">
+                                    <span style="font-size: 1.125rem; font-weight: 600;">Total:</span>
+                                    <span id="totalValor" style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">R$ 0,00</span>
+                                </div>
+                                <button class="btn btn-primary" style="width: 100%;" onclick="finalizarVenda()">
+                                    <i data-lucide="check" class="icon"></i> Finalizar Venda
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div class="modal-overlay" id="modalHistorico">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Histórico de Vendas</h3>
+                <button class="modal-close" onclick="fecharHistorico()">×</button>
+            </div>
+            <div id="historicoConteudo" style="max-height: 500px; overflow-y: auto;"></div>
+        </div>
+    </div>
+    <script src="js/auth.js"></script>
+    <script src="js/vendas.js"></script>
+    <script>
+        verificarAutenticacao();
+        carregarPagina();
+    </script>
+</body>
+</html>
