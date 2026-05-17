@@ -18,7 +18,15 @@
 
             <div class="login-card">
                 <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">Login</h2>
-                <form id="loginForm">
+                <form id="loginForm" th:action="@{/login}" method="POST">
+                    <div th:if="${param.sucesso}" style="display: flex; align-items: center; gap: 0.5rem; background-color: #dcfce7; color: #166534; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1.5rem; font-size: 0.875rem; border: 1px solid #bbf7d0;">
+                        <i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>
+                        <span>Cadastro realizado com sucesso! Faça login para continuar.</span>
+                    </div>
+                    <div th:if="${erroLogin}" class="alert alert-error" style="display: flex; align-items: center; gap: 0.5rem; background-color: #fee2e2; color: #991b1b; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid #fca5a5;">
+                        <i data-lucide="alert-circle" style="width: 18px; height: 18px;"></i>
+                        <span th:text="${erroLogin}">Erro</span>
+                    </div>
                     <div class="form-group">
                         <label class="form-label">Email</label>
                         <div class="form-input-icon">
@@ -70,16 +78,16 @@
             }
             lucide.createIcons();
         });
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const senha = document.getElementById('senha').value;
-            const errorDiv = document.getElementById('errorMessage');
-            if (!email || !senha) {
-                errorDiv.textContent = 'Preencha todos os campos';
-                errorDiv.classList.remove('hidden');
-                return;
-            }
+<!--        document.getElementById('loginForm').addEventListener('submit', function(e) {-->
+<!--            e.preventDefault();-->
+<!--            const email = document.getElementById('email').value;-->
+<!--            const senha = document.getElementById('senha').value;-->
+<!--            const errorDiv = document.getElementById('errorMessage');-->
+<!--            if (!email || !senha) {-->
+<!--                errorDiv.textContent = 'Preencha todos os campos';-->
+<!--                errorDiv.classList.remove('hidden');-->
+<!--                return;-->
+<!--            }-->
             if (login(email, senha)) {
                 const usuario = getUsuarioLogado();
                 if (usuario.tipo === 'gestor') {
