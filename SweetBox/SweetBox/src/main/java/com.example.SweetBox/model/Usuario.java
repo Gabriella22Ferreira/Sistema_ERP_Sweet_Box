@@ -14,8 +14,8 @@ public class Usuario {
 
     private Long id_Usuario;
     private String nome_Completo_Usuario;
-    private String email_Usuario;
-    private String senha_Usuario;
+    private String email;
+    private String senha;
     private String tipo_Usuario; //"gestor" ou "funcionario"
 
     @Transient //NÃO criar uma coluna para isso no banco, só me deixa usar como se tivesse
@@ -23,7 +23,7 @@ public class Usuario {
 
     public Usuario(){}
 
-    public Usuario(Long id_Usuario, String nome_Completo_Usuario, String email_Usuario, String senha_Usuario, String tipo_Usuario) {}
+    public Usuario(Long id_Usuario, String nome_Completo_Usuario, String email, String senha, String tipo_Usuario) {}
 
 
     // GETS
@@ -36,11 +36,11 @@ public class Usuario {
     }
 
     public String getEmail() {
-        return email_Usuario;
+        return email;
     }
 
     public String getSenha() {
-        return senha_Usuario;
+        return senha;
     }
 
     public String getTipoUsuario() {
@@ -60,12 +60,12 @@ public class Usuario {
         this.nome_Completo_Usuario = nome_Completo_Usuario;
     }
 
-    public void setEmail(String email_Usuario) {
-        this.email_Usuario = email_Usuario;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setSenha(String senha_Usuario) {
-        this.senha_Usuario = senha_Usuario;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public void setTipoUsuario(String tipo_Usuario) {
