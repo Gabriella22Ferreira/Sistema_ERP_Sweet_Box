@@ -18,7 +18,38 @@
                         <p>Sistema de Gestão</p>
                     </div>
                 </a>
-                <ul class="navbar-menu" id="navMenu"></ul>
+                <ul class="navbar-menu" id="navMenu">
+                    <nav style="display: flex; justify-content: center; gap: 0.5rem; padding-top: 1rem;">
+
+                        <a th:href="@{/dashboard}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                            <i data-lucide="layout-dashboard" style="width: 20px; height: 20px;"></i>
+                            <span style="font-weight: 500;">Dashboard</span>
+                        </a>
+
+                        <a th:href="@{/vendas}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                            <i data-lucide="shopping-cart" style="width: 20px; height: 20px;"></i>
+                            <span style="font-weight: 500;">Vendas</span>
+                        </a>
+
+                        <a th:href="@{/produtos}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                            <i data-lucide="package" style="width: 20px; height: 20px;"></i>
+                            <span style="font-weight: 500;">Produtos</span>
+                        </a>
+
+                        <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/estoque}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                            <i data-lucide="boxes" style="width: 20px; height: 20px;"></i>
+                            <span style="font-weight: 500;">Estoque</span>
+                        </a>
+
+                        <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/relatorios}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                            <i data-lucide="bar-chart-3" style="width: 20px; height: 20px;"></i>
+                            <span style="font-weight: 500;">Relatórios</span>
+                        </a>
+
+                        <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
+
+                    </nav>
+                </ul>
                 <div class="navbar-user">
                     <div class="navbar-user-info" id="userInfo">
                         <p>Gestor SweetBox</p>
@@ -82,11 +113,8 @@
             <div id="historicoConteudo" style="max-height: 500px; overflow-y: auto;"></div>
         </div>
     </div>
-    <script src="js/auth.js"></script>
-    <script src="js/vendas.js"></script>
-    <script>
-        verificarAutenticacao();
-        carregarPagina();
-    </script>
+<!--    <script src="js/auth.js"></script>-->
+<script src="js/produtos.js"></script>
+    <script>lucide.createIcons(); carregarMenu();</script>
 </body>
 </html>
