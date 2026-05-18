@@ -1,17 +1,3 @@
-let produtos = [];
-let movimentacoes = [];
-
-function carregarPagina() {
-    const usuario = verificarAutenticacao();
-    if (!usuario) return;
-    carregarMenu(usuario);
-    carregarInfoUsuario(usuario);
-    carregarDados();
-    renderizarProdutos();
-    renderizarMovimentacoes();
-    lucide.createIcons();
-}
-
 function carregarMenu(usuario) {
     const menu = document.getElementById('navMenu');
     const itens = [
@@ -24,16 +10,14 @@ function carregarMenu(usuario) {
     menu.innerHTML = itens.filter(item => usuario.tipo === 'gestor' ? item.gestor : item.funcionario)
         .map(item => `<li><a href="${item.path}" class="${window.location.pathname.includes(item.path) ? 'active' : ''}">
             <i data-lucide="${item.icon}" class="icon"></i><span>${item.label}</span></a></li>`).join('');
+
+    // Ativa os ícones do Lucide (caso utilize na sua interface)
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 }
 
-function carregarInfoUsuario(usuario) {
-    document.getElementById('userInfo').innerHTML = `<p>${usuario.nome}</p><span>${usuario.tipo}</span>`;
-}
 
-function carregarDados() {
-    produtos = JSON.parse(localStorage.getItem('sweetbox_produtos') || '[]');
-    movimentacoes = JSON.parse(localStorage.getItem('sweetbox_movimentacoes') || '[]');
-}
 
 function filtrarProdutos() {
     renderizarProdutos();
@@ -112,38 +96,38 @@ function fecharModal() {
     document.getElementById('modalEntrada').classList.remove('active');
 }
 
-document.getElementById('entradaForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const produtoId = document.getElementById('produtoId').value;
-    const quantidade = parseInt(document.getElementById('quantidade').value);
-    const observacao = document.getElementById('observacao').value;
-    
-    if (!produtoId || quantidade <= 0) {
-        alert('Selecione um produto e informe a quantidade');
-        return;
-    }
-    
-    const produto = produtos.find(p => p.id === produtoId);
-    if (!produto) return;
-    
-    produtos = produtos.map(p => p.id === produtoId ? { ...p, quantidade: p.quantidade + quantidade } : p);
-    localStorage.setItem('sweetbox_produtos', JSON.stringify(produtos));
-    
-    const novaMovimentacao = {
-        id: Date.now().toString(),
-        produtoId: produtoId,
-        produtoNome: produto.nome,
-        tipo: 'entrada',
-        quantidade: quantidade,
-        data: new Date().toISOString(),
-        observacao: observacao
-    };
-    movimentacoes.push(novaMovimentacao);
-    localStorage.setItem('sweetbox_movimentacoes', JSON.stringify(movimentacoes));
-    
-    alert('Entrada registrada com sucesso!');
-    carregarDados();
-    renderizarProdutos();
-    renderizarMovimentacoes();
-    fecharModal();
-});
+    document.getElementById('entradaForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const produtoId = document.getElementById('produtoId').value;
+        const quantidade = parseInt(document.getElementById('quantidade').value);
+        const observacao = document.getElementById('observacao').value;
+
+        if (!produtoId || quantidade <= 0) {
+            alert('Selecione um produto e informe a quantidade');
+            return;
+        }
+
+        const produto = produtos.find(p => p.id === produtoId);
+        if (!produto) return;
+
+        produtos = produtos.map(p => p.id === produtoId ? { ...p, quantidade: p.quantidade + quantidade } : p);
+        localStorage.setItem('sweetbox_produtos', JSON.stringify(produtos));
+
+        const novaMovimentacao = {
+            id: Date.now().toString(),
+            produtoId: produtoId,
+            produtoNome: produto.nome,
+            tipo: 'entrada',
+            quantidade: quantidade,
+            data: new Date().toISOString(),
+            observacao: observacao
+        };
+        movimentacoes.push(novaMovimentacao);
+        localStorage.setItem('sweetbox_movimentacoes', JSON.stringify(movimentacoes));
+
+        alert('Entrada registrada com sucesso!');
+        carregarDados();
+        renderizarProdutos();
+        renderizarMovimentacoes();
+        fecharModal();
+    });

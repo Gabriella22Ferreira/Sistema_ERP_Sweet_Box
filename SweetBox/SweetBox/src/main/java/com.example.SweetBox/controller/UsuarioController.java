@@ -68,7 +68,7 @@ public class UsuarioController {
 
         } catch (IllegalArgumentException e) {
             model.addAttribute("erroLogin", e.getMessage());
-            return "/";
+            return "/login";
         }
     }
 
@@ -93,6 +93,17 @@ public class UsuarioController {
         }
         return "vendas";
 
+    }
 
+
+    // ==========================================
+    // ROTA DE LOGOUT (Sair do Sistema)
+    // ==========================================
+    @GetMapping("/logout")
+    public String fazerLogout(jakarta.servlet.http.HttpSession session) {
+        // fecha a sessão.
+        session.invalidate();
+
+        return "redirect:/";
     }
 }

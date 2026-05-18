@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,12 @@
                 </a>
                 <ul class="navbar-menu" id="navMenu"></ul>
                 <div class="navbar-user">
-                    <div class="navbar-user-info" id="userInfo"></div>
+                    <div class="navbar-user-info" id="userInfo">
+                        <p>Gestor SweetBox</p>
+                        <span th:text="${session.usuarioLogado != null ? session.usuarioLogado.nomeCompletoUsuario : 'Usuário'}">
+                            Nome do Figma
+                        </span>
+                    </div>
                     <div class="navbar-avatar">👤</div>
                     <button class="btn-logout" onclick="logout()"><i data-lucide="log-out" class="icon"></i></button>
                 </div>

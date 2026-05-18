@@ -12,73 +12,73 @@ public class Produto {
 
     @Id // Chave Primária
     @GeneratedValue(strategy = GenerationType.IDENTITY) // ID  automatico
-    private Long id_Produto;
+    private Long idProduto;
 
-    private String nome_Produto;
+    private String nomeProduto;
     private String descricao;
     private String categoria;
-    private int quantidade_Produto ;
-    private double valor_Unitario_Produto;
-    private int estoque_Min;
+    private Integer quantidadeProduto ;
+    private Double valorUnidade;
+    private Integer estoqueMin;
 
 
     public Produto(){}
 
     public Produto(
-            Long id_Produto,
-            String nome_Produto,
+            Long idProduto,
+            String nomeProduto,
             String descricao,
             String categoria,
-            int quantidade_Produto,
-            double valor_Unitario_Produto,
-            int estoque_Min ) {}
+            Integer quantidadeProduto,
+            Double valorUnidade,
+            Integer estoqueMin ) {}
 
     //GETS
     public Long getIdProduto() {
-        return id_Produto;
+        return idProduto;
     }
 
     public String getNomeProduto() {
-        return nome_Produto;
+        return nomeProduto;
     }
 
     public String getDescricao() { return descricao; }
 
     public String getCategoria() { return categoria;}
 
-    public int getQntdProduto() {
-        return quantidade_Produto;
+    public Integer getQuantidadeProduto() {
+        return quantidadeProduto;
     }
 
-    public double getValorUnitarioProduto() {
-        return valor_Unitario_Produto;
+    public Double getValorUnidade() {
+        return valorUnidade;
     }
 
-    public int getEstoqueMin() {return estoque_Min; }
+    public Integer getEstoqueMin() {return estoqueMin; }
 
 
     //SETS
-    public void setId(Long id_Produto) {
-        this.id_Produto = id_Produto;
+    public void setIdProduto(Long idProduto) {
+        this.idProduto = idProduto;
     }
 
-    public void setNomeProduto(String nome_Produto) {
-        this.nome_Produto = nome_Produto;
+    public void setNomeProduto(String nomeProduto) {
+        this.nomeProduto = nomeProduto;
     }
 
     public void setDescricao(String descricao) {this.descricao = descricao;}
 
     public void setCategoria(String categoria) {this.categoria = categoria;}
 
-    public void setQntd_Produto(int quantidade_Produto) {
-        this.quantidade_Produto = quantidade_Produto;
+    public void setQuantidadeProduto(Integer quantidadeProduto) {
+        this.quantidadeProduto = quantidadeProduto;
     }
 
-    public void setValorUnitarioProduto(double valor_Unitario_Produto) {
-        this.valor_Unitario_Produto = valor_Unitario_Produto;
+    public void setValorUnidade(Double valorUnidade) {
+        this.valorUnidade = valorUnidade;
     }
 
-    public void setEstoque_Min(int estoque_Min) {this.estoque_Min = estoque_Min;}
+    public void setEstoqueMin(Integer estoqueMin) {this.estoqueMin = estoqueMin;}
 
 }
 

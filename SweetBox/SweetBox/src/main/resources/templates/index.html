@@ -47,13 +47,7 @@
                     <div id="errorMessage" class="alert alert-error hidden"></div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
                 </form>
-                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-                    <p style="font-size: 0.875rem; color: var(--muted-foreground); margin-bottom: 0.75rem;">Login rápido para teste:</p>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button type="button" class="btn btn-secondary" onclick="loginRapido('gestor')">Gestor</button>
-                        <button type="button" class="btn btn-secondary" onclick="loginRapido('funcionario')">Funcionário</button>
-                    </div>
-                </div>
+
                 <div class="text-center mt-4">
                     <p style="font-size: 0.875rem; color: var(--muted-foreground);">
                         Não tem uma conta?
@@ -78,16 +72,7 @@
             }
             lucide.createIcons();
         });
-<!--        document.getElementById('loginForm').addEventListener('submit', function(e) {-->
-<!--            e.preventDefault();-->
-<!--            const email = document.getElementById('email').value;-->
-<!--            const senha = document.getElementById('senha').value;-->
-<!--            const errorDiv = document.getElementById('errorMessage');-->
-<!--            if (!email || !senha) {-->
-<!--                errorDiv.textContent = 'Preencha todos os campos';-->
-<!--                errorDiv.classList.remove('hidden');-->
-<!--                return;-->
-<!--            }-->
+
             if (login(email, senha)) {
                 const usuario = getUsuarioLogado();
                 if (usuario.tipo === 'gestor') {
@@ -100,14 +85,8 @@
                 errorDiv.classList.remove('hidden');
             }
         });
-        function loginRapido(tipo) {
-            const emails = {
-                gestor: 'gestor@sweetbox.com',
-                funcionario: 'funcionario@sweetbox.com'
-            };
-            document.getElementById('email').value = emails[tipo];
-            document.getElementById('senha').value = 'SweetBox@2024';
-        }
+
+
     </script>
 </body>
 </html>
