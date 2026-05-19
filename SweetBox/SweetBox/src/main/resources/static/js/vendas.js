@@ -271,20 +271,15 @@
 //}
 
 
+let carrinho = []; // Memória do carrinho
 
-
-// Memória do carrinho
-let carrinho = [];
-
+// Chamado pelo th:onclick do HTML
 function adicionarAoCarrinho(id, nome, preco) {
-    // Verifica se o produto já está no carrinho
     const itemExistente = carrinho.find(item => item.id === id);
 
     if (itemExistente) {
-        // Se já tem, só aumenta a quantidade
         itemExistente.quantidade += 1;
     } else {
-        // Se não tem, adiciona um novo item
         carrinho.push({
             id: id,
             nome: nome,
@@ -297,30 +292,69 @@ function adicionarAoCarrinho(id, nome, preco) {
 }
 
 function atualizarVisualDoCarrinho() {
-    const listaCarrinho = document.getElementById('itensCarrinho'); // A div <ul> ou <div> onde os itens vão aparecer
-    const spanTotal = document.getElementById('valorTotalVenda'); // O <span> onde fica o R$ 0,00 final
+    const divItens = document.getElementById('itensCarrinho');
+    const spanTotal = document.getElementById('totalValor'); // ID corrigido
+    const footer = document.getElementById('carrinhoFooter'); // Pega o rodapé escondido
 
-    listaCarrinho.innerHTML = '';
+    if (!divItens || !spanTotal) return;
+
+    divItens.innerHTML = '';
     let totalDaVenda = 0;
 
-    carrinho.forEach((item, index) => {
+    carrinho.forEach((item) => {
         const subtotal = item.preco * item.quantidade;
         totalDaVenda += subtotal;
 
-        // Desenha o item na lateral
-        listaCarrinho.innerHTML += `
-            <div class="flex-between mb-2" style="border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">
+        divItens.innerHTML += `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">
                 <div>
-                    <span style="font-weight: 600;">${item.nome}</span>
-                    <div style="font-size: 0.8rem; color: gray;">${item.quantidade}x R$ ${item.preco.toFixed(2)}</div>
+                    <h5 style="margin: 0 0 0.25rem 0; font-size: 0.95rem;">${item.nome}</h5>
+                    <div style="font-size: 0.8rem; color: gray;">
+                        ${item.quantidade}x R$ ${item.preco.toFixed(2)}
+                    </div>
                 </div>
-                <div style="font-weight: bold;">R$ ${subtotal.toFixed(2)}</div>
+                <div style="font-weight: 600; color: var(--primary);">
+                    R$ ${subtotal.toFixed(2)}
+                </div>
             </div>
         `;
     });
 
-    // Atualiza o número final
-    if (spanTotal) {
-        spanTotal.textContent = totalDaVenda.toFixed(2);
+    // Atualiza o valor e mostra o rodapé
+    spanTotal.textContent = 'R$ ' + totalDaVenda.toFixed(2);
+
+    if (carrinho.length > 0) {
+        footer.style.display = 'block'; // Mostra o botão Finalizar
+    } else {
+        footer.style.display = 'none'; // Esconde se estiver vazio
     }
+}
+
+function finalizarVenda() {
+    // 1. Verifica se tem algo no carrinho
+    if (carrinho.length === 0) {
+        alert("Adicione produtos ao carrinho antes de finalizar!");
+        return;
+    }
+
+    // 2. Prepara os dados e envia para o Java via POST
+    fetch('/vendas/finalizar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' // Avisa o Java que estamos mandando um JSON
+        },
+        body: JSON.stringify(carrinho) // Transforma a nossa lista numa string para viajar pela internet
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Venda finalizada com sucesso!");
+            window.location.reload(); // Recarrega a página para zerar o carrinho
+        } else {
+            alert("Erro ao finalizar a venda no servidor.");
+        }
+    })
+    .catch(error => {
+        console.error("Erro:", error);
+        alert("Erro de comunicação com o servidor.");
+    });
 }

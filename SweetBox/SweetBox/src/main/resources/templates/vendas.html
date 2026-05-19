@@ -108,8 +108,12 @@
                                 <i data-lucide="shopping-cart" class="icon-lg" style="color: var(--primary);"></i>
                                 <h3 style="font-size: 1.25rem; font-weight: 700;">Carrinho</h3>
                             </div>
-                            <div id="carrinhoItens" style="max-height: 400px; overflow-y: auto;"></div>
-                            <div id="carrinhoFooter" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                            <div id="carrinhoItens" style="max-height: 400px; overflow-y: auto;">
+                                <div id="itensCarrinho" style="min-height: 200px; max-height: 400px; overflow-y: auto; margin-bottom: 1rem;">
+                                    <p style="text-align: center; color: var(--muted-foreground); margin-top: 2rem;">O carrinho está vazio</p>
+                                </div>
+                            </div>
+                            <div id="carrinhoFooter" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
                                 <div class="flex-between mb-3">
                                     <span style="font-size: 1.125rem; font-weight: 600;">Total:</span>
                                     <span id="totalValor" style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">R$ 0,00</span>
@@ -133,7 +137,7 @@
             <div id="historicoConteudo" style="max-height: 500px; overflow-y: auto;"></div>
         </div>
     </div>
-<!--    <script src="js/auth.js"></script>-->
+
 <script src="js/produtos.js"></script>
     <script src="js/vendas.js"></script>
     <script>lucide.createIcons(); carregarMenu();</script>
