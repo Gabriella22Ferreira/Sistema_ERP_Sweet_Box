@@ -20,12 +20,15 @@ public class UsuarioService {
             throw new IllegalArgumentException("O nome não pode estar vazio!");
         }
 
-        // 2. Validação do Email (Não vazio e precisa conter '@')
+        // 2. Validação do Email (Não vazio, precisa conter '@' e não pode ser repetido)
         if (usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
             throw new IllegalArgumentException("O e-mail não pode estar vazio!");
         }
         if (!usuario.getEmail().contains("@")) {
             throw new IllegalArgumentException("O e-mail digitado é inválido (falta o @)!");
+        }
+        if (usuarioRepository.findByEmail(usuario.getEmail()) != null) {
+            throw new IllegalArgumentException("Este e-mail já está cadastrado!");
         }
 
         // 3. Validação das Senhas Iguais
