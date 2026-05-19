@@ -80,7 +80,27 @@
                         <div class="card mb-3">
                             <input type="text" id="busca" class="form-input" placeholder="Buscar produtos..." oninput="filtrarProdutos()">
                         </div>
-                        <div class="grid grid-cols-sm-2 gap-2" id="listaProdutos"></div>
+                        <div class="grid grid-cols-sm-2 gap-2" id="listaProdutos">
+                            <div class="grid-lista" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
+
+                                <div th:if="${#lists.isEmpty(produtos)}" class="text-center" style="grid-column: 1 / -1;">
+                                    <p>Nenhum produto cadastrado para vender.</p>
+                                </div>
+
+                                <div th:each="p : ${produtos}" class="card" style="cursor: pointer; transition: 0.2s;"
+                                     onmouseover="this.style.transform='scale(1.05)'"
+                                     onmouseout="this.style.transform='scale(1)'"
+                                     th:onclick="adicionarAoCarrinho([[${p.idProduto}]], [[${p.nomeProduto}]], [[${p.valorUnidade}]])">
+
+                                    <div style="text-align: center;">
+                                        <i data-lucide="package" class="icon" style="margin-bottom: 0.5rem; color: var(--primary);"></i>
+                                        <h4 style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;" th:text="${p.nomeProduto}">Nome</h4>
+                                        <span style="color: var(--primary); font-weight: bold;" th:text="'R$ ' + ${p.valorUnidade}">R$ 0,00</span>
+                                        <p style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.5rem;" th:text="'Estoque: ' + ${p.quantidadeProduto}">Estoque: 0</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <div class="card" style="position: sticky; top: 1rem;">
@@ -115,6 +135,7 @@
     </div>
 <!--    <script src="js/auth.js"></script>-->
 <script src="js/produtos.js"></script>
+    <script src="js/vendas.js"></script>
     <script>lucide.createIcons(); carregarMenu();</script>
 </body>
 </html>
