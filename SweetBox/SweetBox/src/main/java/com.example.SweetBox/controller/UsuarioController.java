@@ -1,20 +1,27 @@
 package com.example.SweetBox.controller;
 
+import com.example.SweetBox.model.Produto;
 import com.example.SweetBox.model.Usuario;
+import com.example.SweetBox.service.ProdutoService;
 import com.example.SweetBox.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private ProdutoService produtoService;
 
     // ==========================================
     // ROTAS DE TELA INICIAL E CADASTRO
@@ -86,11 +93,16 @@ public class UsuarioController {
     }
 
     @GetMapping("/vendas")
-    public String abrirVendas(HttpSession session) {
+    public String abrirVendas(Model model, HttpSession session) {
         // Bloqueia o acesso se não estiver logado
         if (session.getAttribute("usuarioLogado") == null) {
             return "redirect:/";
         }
+
+        // 2. Busca os produtos e manda para a tela de vendas
+
+        List<Produto> listaDeProdutos = produtoService.listarTodosProdutos();
+        model.addAttribute("produtos", listaDeProdutos);
         return "vendas";
 
     }
