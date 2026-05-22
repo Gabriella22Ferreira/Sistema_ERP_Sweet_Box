@@ -92,19 +92,11 @@ public class UsuarioController {
         return "dashboard";
     }
 
-    @GetMapping("/vendas")
-    public String abrirVendas(Model model, HttpSession session) {
-        // Bloqueia o acesso se não estiver logado
-        if (session.getAttribute("usuarioLogado") == null) {
-            return "redirect:/";
-        }
+    //ir para o estoque
+    @GetMapping("/estoque")
+    public String paginaEstoque() {
 
-        // 2. Busca os produtos e manda para a tela de vendas
-
-        List<Produto> listaDeProdutos = produtoService.listarTodosProdutos();
-        model.addAttribute("produtos", listaDeProdutos);
-        return "vendas";
-
+        return "estoque";
     }
 
 
