@@ -31,7 +31,7 @@ public class DashController {
         List<Produto> todosProdutos = produtoRepository.findAll();
         long totalProdutos = todosProdutos.size();
 
-        // 2. Estoque em Alerta
+        // 2. Estoque em Alerta (Baseado na lógica do seu arquivo JS original)
         long estoqueBaixo = todosProdutos.stream()
                 .filter(p -> p.getQuantidadeProduto() != null && p.getEstoqueMin() != null
                         && p.getQuantidadeProduto() <= p.getEstoqueMin())

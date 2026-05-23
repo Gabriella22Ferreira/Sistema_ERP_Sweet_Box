@@ -81,11 +81,12 @@ public class UsuarioController {
     // ROTAS DO SISTEMA (PÓS-LOGIN)
     // ==========================================
 
-    //ir para o estoque
-    @GetMapping("/estoque")
-    public String paginaEstoque() {
-        return "estoque";
-    }
+
+
+
+
+
+
 
     // ==========================================
     // ROTAS DE LOGOUT (Sair do Sistema)

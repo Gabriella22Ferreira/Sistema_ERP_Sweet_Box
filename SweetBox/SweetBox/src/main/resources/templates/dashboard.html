@@ -69,16 +69,56 @@
                         <button class="btn" id="btnAnual" onclick="setPeriodo('anual')">Anual</button>
                     </div>
                 </div>
-                <div class="stats-grid" id="statsCards"></div>
-                <div class="grid grid-cols-sm-2 gap-3 mb-4">
-                    <div class="card">
-                        <h3 class="card-title" id="tituloVendas">Vendas por Hora</h3>
-                        <canvas id="chartVendas"></canvas>
+                <div class="stats-grid" id="statsCards">
+
+                    <div class="stat-card">
+                        <div class="stat-card-content">
+                            <div class="stat-card-info">
+                                <p>Total de Produtos</p>
+                                <h3 th:text="${totalProdutos}">0</h3>
+                            </div>
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, var(--primary), var(--accent));">
+                                <i data-lucide="package" class="icon-lg"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card">
-                        <h3 class="card-title" id="tituloReceita">Receita por Hora</h3>
-                        <canvas id="chartReceita"></canvas>
+
+                    <div class="stat-card">
+                        <div class="stat-card-content">
+                            <div class="stat-card-info">
+                                <p>Total de Vendas</p>
+                                <h3 th:text="${totalVendas}">0</h3>
+                            </div>
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, var(--accent), var(--secondary));">
+                                <i data-lucide="shopping-cart" class="icon-lg"></i>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-content">
+                            <div class="stat-card-info">
+                                <p>Receita Total</p>
+                                <h3>R$ <span th:text="${#numbers.formatDecimal(receitaTotal, 1, 'POINT', 2, 'COMMA')}">0,00</span></h3>
+                            </div>
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, var(--secondary), var(--primary));">
+                                <i data-lucide="trending-up" class="icon-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-content">
+                            <div class="stat-card-info">
+                                <p>Estoque Baixo</p>
+                                <h3 th:text="${estoqueBaixo}">0</h3>
+                            </div>
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, var(--destructive), var(--accent));">
+                                <i data-lucide="alert-circle" class="icon-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="card">
                     <div class="flex gap-2 mb-3">
@@ -93,6 +133,22 @@
 
     <script src="js/dashboard.js"></script>
     <script>lucide.createIcons(); carregarMenu();</script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // O Thymeleaf vai injetar as Listas ou Arrays vindos do seu Controller diretamente aqui
+        var labels = /*[[${labelsGrafico}]]*/ ['Seg', 'Ter', 'Qua'];
+        var dadosVendas = /*[[${dadosGraficoVendas}]]*/ [10, 20, 30];
+        var dadosReceita = /*[[${dadosGraficoReceita}]]*/ [100.0, 250.0, 300.0];
+
+        // Chama a função puramente visual do seu dashboard.js assim que a tela carregar
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof renderizarGraficos === "function") {
+                renderizarGraficos(labels, dadosVendas, dadosReceita);
+            }
+            lucide.createIcons(); // Inicializa os ícones do Lucide perfeitamente
+        });
+        /*]]>*/
+    </script>
 
 </body>
 </html>
