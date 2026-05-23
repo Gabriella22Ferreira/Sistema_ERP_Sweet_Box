@@ -55,17 +55,17 @@
                     <div class="form-group">
                         <label class="form-label">Nome Completo</label>
                         <input type="text" name="nomeCompletoUsuario" th:value="${usuario?.nomeCompletoUsuario}" th:classappend="${mensagemErro != null && mensagemErro.contains('nome')} ? 'input-error' : ''" class="form-input" placeholder="Seu nome completo">
-<!--                        <input type="text" id="nome" name="nomeCompletoUsuario" class="form-input" placeholder="Seu nome completo" required>-->
+
                     </div>
                     <div class="form-group">
                         <label class="form-label">Email</label>
                         <input type="text" name="email" th:value="${usuario?.email}" th:classappend="${mensagemErro != null && mensagemErro.contains('e-mail')} ? 'input-error' : ''" class="form-input" placeholder="seu@email.com">
-<!--                        <input type="email" id="email" class="form-input" placeholder="seu@email.com" required>-->
+
                     </div>
                     <div class="form-group">
                         <label class="form-label">Senha</label>
                         <input type="password" id="senha" name="senha" th:classappend="${mensagemErro != null && (mensagemErro.contains('senha') || mensagemErro.contains('Senha')) && !mensagemErro.contains('confirmação')} ? 'input-error' : ''" class="form-input" placeholder="••••••••">
-<!--                        <input type="password" id="senha" class="form-input" placeholder="••••••••" required>-->
+
                     </div>
                     <div id="requisitosContainer" style="display: none;" class="card mb-3">
                         <p style="font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Requisitos da senha:</p>
@@ -95,12 +95,6 @@
                     <div id="errorMessage" class="alert alert-error hidden"></div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Criar Conta</button>
                 </form>
-                <div class="text-center mt-4">
-                    <p style="font-size: 0.875rem; color: var(--muted-foreground);">
-                        Já tem uma conta?
-                        <a th:href="@{/index}" style="color: var(--primary); font-weight: 500; text-decoration: none;">Faça login</a>
-                    </p>
-                </div>
             </div>
         </div>
     </div>
