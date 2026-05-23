@@ -28,3 +28,28 @@ function fecharModal() {
     // 1. Remove a classe 'active', escondendo a janela
     document.getElementById('modalProduto').classList.remove('active');
 }
+
+function abrirModalEditar(id, nome, preco, quantidade) {
+    document.getElementById("modalEditarProduto").classList.add("active");
+
+    document.getElementById("editId").value = id;
+    document.getElementById("editNome").value = nome;
+    document.getElementById("editPreco").value = preco;
+    document.getElementById("editQuantidade").value = quantidade;
+
+    document.getElementById("formEditarProduto").action = "/produtos/atualizar/" + id;
+}
+
+function fecharModalEditar() {
+    document.getElementById("modalEditarProduto").classList.remove("active");
+}
+
+function abrirModalDelete(id) {
+    document.getElementById("modalDelete").classList.add("active");
+
+    document.getElementById("btnConfirmDelete").href = "/produtos/deletar/" + id;
+}
+
+function fecharModalDelete() {
+    document.getElementById("modalDelete").classList.remove("active");
+}

@@ -83,12 +83,18 @@
                                 </div>
 
                                 <div class="flex gap-1">
-                                    <button class="btn btn-outline" style="padding: 0.5rem;">
-                                        <i data-lucide="pencil" class="icon" style="width: 16px; height: 16px;"></i>
+                                    <button type="button"
+                                            class="btn btn-outline"
+                                            style="padding: 0.5rem;"
+                                            th:onclick="abrirModalEditar([[${p.idProduto}]], [[${p.nomeProduto}]], [[${p.valorUnidade}]], [[${p.quantidadeProduto}]])">
+                                        <i data-lucide="pencil"></i>
                                     </button>
 
-                                    <button class="btn btn-outline" style="padding: 0.5rem; color: var(--destructive);">
-                                        <i data-lucide="trash-2" class="icon" style="width: 16px; height: 16px;"></i>
+                                    <button type="button"
+                                            class="btn btn-outline"
+                                            style="padding: 0.5rem; color: var(--destructive);"
+                                            th:onclick="'abrirModalDelete(' + ${p.idProduto} + ')'">
+                                        <i data-lucide="trash-2"></i>
                                     </button>
                                 </div>
                             </div>
@@ -103,12 +109,12 @@
 
                                 <div class="flex-between" style="font-size: 0.875rem;">
                                     <span style="color: var(--muted-foreground);">Estoque:</span>
-                                    <span style="font-weight: 600;" th:style="${p.quantidadeProduto <= p.estoqueMin} ? 'color: var(--destructive);' : 'color: var(--foreground);'" th:text="${p.quantidadeProduto} + ' un.'">
+                                    <span style="font-weight: 600;" th:style="${p.estoqueMin != null and p.quantidadeProduto <= p.estoqueMin} ? 'color: var(--destructive);' : 'color: var(--foreground);'" th:text="${p.quantidadeProduto} + ' un.'">
                     0 un.
                 </span>
                                 </div>
 
-                                <div th:if="${p.quantidadeProduto <= p.estoqueMin}" class="badge badge-danger" style="width: 100%; text-align: center;">
+                                <div th:if="${p.estoqueMin != null and p.quantidadeProduto <= p.estoqueMin}" class="badge badge-danger" style="width: 100%; text-align: center;">
                                     Estoque baixo!
                                 </div>
                             </div>
@@ -164,8 +170,62 @@
         </div>
     </div>
 
-    <script src="js/produtos.js"></script>
-    <script>lucide.createIcons(); carregarMenu();</script>
+    <script th:src="@{/js/produtos.js}"></script>
+    <script>lucide.createIcons();</script>
+
+    <div class="modal-overlay" id="modalEditarProduto">
+        <div class="modal">
+
+            <div class="modal-header">
+                <h3 class="modal-title">Editar Produto</h3>
+                <button class="modal-close" onclick="fecharModalEditar()">×</button>
+            </div>
+
+            <form id="formEditarProduto" method="POST">
+
+                <input type="hidden" id="editId">
+
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" name="nomeProduto" id="editNome" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label>Preço</label>
+                    <input type="number" name="valorUnidade" id="editPreco" class="form-input" step="0.01">
+                </div>
+
+                <div class="form-group">
+                    <label>Quantidade</label>
+                    <input type="number" name="quantidadeProduto" id="editQuantidade" class="form-input">
+                </div>
+
+                <div class="flex gap-2 mt-4">
+                    <button type="button" class="btn btn-outline" onclick="fecharModalEditar()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalDelete">
+        <div class="modal">
+
+            <h3>Tem certeza que deseja excluir?</h3>
+
+            <div class="flex gap-2 mt-4">
+                <button class="btn btn-outline" onclick="fecharModalDelete()">Cancelar</button>
+                <a id="btnConfirmDelete" class="btn" style="background: red; color: white; text-decoration: none; text-align: center; cursor: pointer;">
+                    Excluir
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+
 
 </body>
 </html>

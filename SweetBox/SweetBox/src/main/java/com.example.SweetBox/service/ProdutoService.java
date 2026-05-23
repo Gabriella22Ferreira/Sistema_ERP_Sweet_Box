@@ -33,4 +33,29 @@ public class ProdutoService {
         return produtoRepository.findAll();
     }
 
+    // BUSCAR POR ID (editar)
+    public Produto buscarPorId(Long id) {
+        return produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+    }
+
+    public void deletarProduto(Long id) {
+        if (!produtoRepository.existsById(id)) {
+            throw new RuntimeException("Produto não encontrado!");
+        }
+        produtoRepository.deleteById(id);
+    }
+
+    public Produto atualizarProduto(Long id, Produto produtoAtualizado) {
+
+        Produto produtoExistente = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+
+        produtoExistente.setNomeProduto(produtoAtualizado.getNomeProduto());
+        produtoExistente.setValorUnidade(produtoAtualizado.getValorUnidade());
+        produtoExistente.setQuantidadeProduto(produtoAtualizado.getQuantidadeProduto());
+
+        return produtoRepository.save(produtoExistente);
+    }
+
 }

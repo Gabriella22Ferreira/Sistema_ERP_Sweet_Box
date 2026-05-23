@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @Controller
@@ -63,6 +64,30 @@ public class ProdutoController {
         model.addAttribute("produtos", listaDeProdutos);
 
         return "produtos";
+    }
+
+    @PostMapping("/produtos/atualizar/{id}")
+    public String atualizarProduto(@PathVariable Long id, Produto produto, HttpSession session) {
+
+        if (session.getAttribute("usuarioLogado") == null) {
+            return "redirect:/";
+        }
+
+        produtoService.atualizarProduto(id, produto);
+
+        return "redirect:/produtos";
+    }
+
+    @GetMapping("/produtos/deletar/{id}")
+    public String deletar(@PathVariable Long id, HttpSession session) {
+
+        if (session.getAttribute("usuarioLogado") == null) {
+            return "redirect:/";
+        }
+
+        produtoService.deletarProduto(id);
+
+        return "redirect:/produtos";
     }
 
 
