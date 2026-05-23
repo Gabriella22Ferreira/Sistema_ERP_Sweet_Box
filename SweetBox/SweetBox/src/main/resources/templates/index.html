@@ -50,43 +50,14 @@
 
                 <div class="text-center mt-4">
                     <p style="font-size: 0.875rem; color: var(--muted-foreground);">
-                        Não tem uma conta?
-                        <a th:href="@{/cadastro}" style="color: var(--primary); font-weight: 500; text-decoration: none;">Cadastre-se</a>
+                        Esqueceu sua Senha? Ligue para +55 (11) 95991-1849
+<!--                        <a th:href="@{/cadastro}" style="color: var(&#45;&#45;primary); font-weight: 500; text-decoration: none;">Cadastre-se</a>-->
                     </p>
                 </div>
             </div>
         </div>
     </div>
-<!--    <script src="js/all.js"></script>-->
-    <script>
-        lucide.createIcons();
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const senhaInput = document.getElementById('senha');
-            const eyeIcon = document.getElementById('eyeIcon');
-            if (senhaInput.type === 'password') {
-                senhaInput.type = 'text';
-                eyeIcon.setAttribute('data-lucide', 'eye-off');
-            } else {
-                senhaInput.type = 'password';
-                eyeIcon.setAttribute('data-lucide', 'eye');
-            }
-            lucide.createIcons();
-        });
-
-            if (login(email, senha)) {
-                const usuario = getUsuarioLogado();
-                if (usuario.tipo === 'gestor') {
-                    window.location.href = 'dashboard.html';
-                } else {
-                    window.location.href = 'vendas.html';
-                }
-            } else {
-                errorDiv.textContent = 'Email ou senha incorretos';
-                errorDiv.classList.remove('hidden');
-            }
-        });
-
-
-    </script>
+    <script src="js/all.js"></script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

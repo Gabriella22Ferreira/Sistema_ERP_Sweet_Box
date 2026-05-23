@@ -73,7 +73,7 @@ public class UsuarioController {
 
         } catch (IllegalArgumentException e) {
             model.addAttribute("erroLogin", e.getMessage());
-            return "/login";
+            return "index";
         }
     }
 
@@ -81,14 +81,14 @@ public class UsuarioController {
     // ROTAS DO SISTEMA (PÓS-LOGIN)
     // ==========================================
 
-    @GetMapping("/dashboard")
-    public String abrirDashboard(HttpSession session) {
-        // Bloqueia o acesso se não estiver logado
-        if (session.getAttribute("usuarioLogado") == null) {
-            return "redirect:/";
-        }
-        return "dashboard";
-    }
+//    @GetMapping("/dashboard")
+//    public String abrirDashboard(HttpSession session) {
+//        // Bloqueia o acesso se não estiver logado
+//        if (session.getAttribute("usuarioLogado") == null) {
+//            return "redirect:/";
+//        }
+//        return "dashboard";
+//    }
 
     //ir para o estoque
     @GetMapping("/estoque")
