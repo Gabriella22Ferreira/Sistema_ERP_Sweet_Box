@@ -90,7 +90,7 @@
                     <div class="form-group">
                         <label class="form-label">Confirmar Senha</label>
                         <input type="password" id="confirmarSenha" name="confirmacaoSenha" th:classappend="${mensagemErro != null && mensagemErro.contains('confirmação')} ? 'input-error' : ''" class="form-input" placeholder="••••••••">
-<!--                        <input type="password" id="confirmarSenha" class="form-input" placeholder="••••••••" required>-->
+
                     </div>
                     <div id="errorMessage" class="alert alert-error hidden"></div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Criar Conta</button>
@@ -103,44 +103,12 @@
     <script>
         lucide.createIcons();
 
-        // Faz o botão do Figma mudar de cor visualmente ao selecionar o cargo
-        function marcarBotaoJava(tipo) {
-            const btnGestor = document.getElementById('btnGestor');
-            const btnFuncionario = document.getElementById('btnFuncionario');
-
-            if (tipo === 'gestor') {
-                btnGestor.className = 'btn btn-primary';
-                btnFuncionario.className = 'btn btn-outline';
-            } else {
-                btnGestor.className = 'btn btn-outline';
-                btnFuncionario.className = 'btn btn-primary';
-            }
-        }
-
         // Se a página recarregar por erro, mantém o botão que o usuário clicou ativo
         window.addEventListener('DOMContentLoaded', () => {
             const selecionado = document.querySelector('input[name="tipoUsuario"]:checked');
             if (selecionado) {
                 marcarBotaoJava(selecionado.value);
             }
-        });
-
-        // Código do Olho para ver a Senha
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const senhaInput = document.getElementById('senha');
-            const eyeIcon = document.getElementById('eyeIcon');
-            senhaInput.type = senhaInput.type === 'password' ? 'text' : 'password';
-            eyeIcon.setAttribute('data-lucide', senhaInput.type === 'password' ? 'eye' : 'eye-off');
-            lucide.createIcons();
-        });
-
-        // Código do Olho para ver a Confirmação de Senha
-        document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
-            const confirmarSenhaInput = document.getElementById('confirmarSenha');
-            const confirmEyeIcon = document.getElementById('confirmEyeIcon');
-            confirmarSenhaInput.type = confirmarSenhaInput.type === 'password' ? 'text' : 'password';
-            confirmEyeIcon.setAttribute('data-lucide', confirmarSenhaInput.type === 'password' ? 'eye' : 'eye-off');
-            lucide.createIcons();
         });
 
 

@@ -1,18 +1,51 @@
 
 ///////////OLHOS PARA SENHA
-//document.getElementById('togglePassword').addEventListener('click', function() {
+    document.getElementById('togglePassword').addEventListener('click', function() {
+            const senhaInput = document.getElementById('senha');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (senhaInput.type === 'password') {
+                senhaInput.type = 'text';
+                eyeIcon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                senhaInput.type = 'password';
+                eyeIcon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        });
+
+
+// Código do Olho para ver a Confirmação de Senha
+        document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+            const confirmarSenhaInput = document.getElementById('confirmarSenha');
+            const confirmEyeIcon = document.getElementById('confirmEyeIcon');
+            confirmarSenhaInput.type = confirmarSenhaInput.type === 'password' ? 'text' : 'password';
+            confirmEyeIcon.setAttribute('data-lucide', confirmarSenhaInput.type === 'password' ? 'eye' : 'eye-off');
+            lucide.createIcons();
+        });
+
+// document.getElementById('togglePassword').addEventListener('click', function() {
 //            const senhaInput = document.getElementById('senha');
 //            const eyeIcon = document.getElementById('eyeIcon');
-//            if (senhaInput.type === 'password') {
-//                senhaInput.type = 'text';
-//                eyeIcon.setAttribute('data-lucide', 'eye-off');
-//            } else {
-//                senhaInput.type = 'password';
-//                eyeIcon.setAttribute('data-lucide', 'eye');
-//            }
+//            senhaInput.type = senhaInput.type === 'password' ? 'text' : 'password';
+//            eyeIcon.setAttribute('data-lucide', senhaInput.type === 'password' ? 'eye' : 'eye-off');
 //            lucide.createIcons();
 //        });
 
+////////COR DOS BOTÕES PARA O CARGO
+
+// Faz o botão do Figma mudar de cor visualmente ao selecionar o cargo
+        function marcarBotaoJava(tipo) {
+            const btnGestor = document.getElementById('btnGestor');
+            const btnFuncionario = document.getElementById('btnFuncionario');
+
+            if (tipo === 'gestor') {
+                btnGestor.className = 'btn btn-primary';
+                btnFuncionario.className = 'btn btn-outline';
+            } else {
+                btnGestor.className = 'btn btn-outline';
+                btnFuncionario.className = 'btn btn-primary';
+            }
+        }
 
 
 ////////////// NAVBAR
@@ -23,7 +56,7 @@ function carregarMenu(usuario) {
         { path: 'produtos.html', icon: 'package', label: 'Produtos', gestor: true, funcionario: true },
         { path: 'estoque.html', icon: 'box', label: 'Estoque', gestor: true, funcionario: true },
         { path: 'vendas.html', icon: 'shopping-cart', label: 'Vendas', gestor: true, funcionario: true },
-        { path: 'relatorios.html', icon: 'bar-chart-3', label: 'Relatórios', gestor: true, funcionario: false }
+        { path: 'cadastro.html', icon: 'bar-chart-3', label: 'Cadastros', gestor: true, funcionario: false }
     ];
     menu.innerHTML = itens.filter(item => usuario.tipo === 'gestor' ? item.gestor : item.funcionario)
         .map(item => `<li><a href="${item.path}" class="${window.location.pathname.includes(item.path) ? 'active' : ''}">

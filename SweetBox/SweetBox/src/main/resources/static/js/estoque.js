@@ -27,7 +27,7 @@ function renderizarProdutos() {
     const busca = document.getElementById('busca').value.toLowerCase();
     const produtosFiltrados = produtos.filter(p => p.nome.toLowerCase().includes(busca));
     const tbody = document.getElementById('tabelaProdutos');
-    
+
     if (produtosFiltrados.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" class="text-center" style="padding: 2rem; color: var(--muted-foreground);">Nenhum produto encontrado</td></tr>';
     } else {
@@ -40,7 +40,7 @@ function renderizarProdutos() {
                     <td style="text-align: center; font-weight: 700; color: ${baixo ? 'var(--destructive)' : 'var(--foreground)'};">${p.quantidade} un.</td>
                     <td style="text-align: center; color: var(--muted-foreground);">${p.estoqueMinimo} un.</td>
                     <td style="text-align: center;">
-                        ${baixo 
+                        ${baixo
                             ? '<span class="badge badge-danger"><i data-lucide="trending-down" style="width: 14px; height: 14px; margin-right: 4px;"></i>Baixo</span>'
                             : '<span class="badge badge-success"><i data-lucide="trending-up" style="width: 14px; height: 14px; margin-right: 4px;"></i>OK</span>'
                         }

@@ -98,14 +98,41 @@
                     <div class="card table-wrapper">
                         <table>
                             <thead>
-                            <tr>
-                                <th>Produto</th>
-                                <th style="text-align: center;">Estoque Atual</th>
-                                <th style="text-align: center;">Estoque Mínimo</th>
-                                <th style="text-align: center;">Status</th>
-                            </tr>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th style="text-align: center;">Estoque Atual</th>
+                                    <th style="text-align: center;">Estoque Mínimo</th>
+                                    <th style="text-align: center;">Status</th>
+                                </tr>
                             </thead>
                             <tbody id="tabelaProdutos">
+                                <tr th:each="produto : ${produtos}">
+                                    <td>
+                                        <div class="flex gap-2">
+                                            <i data-lucide="package" class="icon" style="color: var(--primary);"></i>
+                                            <span style="font-weight: 500;" th:text="${produto.nomeProduto}">Nome do Produto</span>
+                                        </div>
+                                    </td>
+
+                                    <td style="text-align: center; font-weight: 700;"
+                                        th:styleappend="${produto.quantidadeProduto <= produto.estoqueMin} ? 'color: var(--destructive);' : 'color: var(--foreground);'"
+                                        th:text="${produto.quantidadeProduto} + ' un.'">
+                                        0 un.
+                                    </td>
+
+                                    <td style="text-align: center; color: var(--muted-foreground);" th:text="${produto.estoqueMin} + ' un.'">
+                                        0 un.
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <span th:if="${produto.quantidadeProduto <= produto.estoqueMin}" class="badge badge-danger">
+                                            <i data-lucide="trending-down" style="width: 14px; height: 14px; margin-right: 4px;"></i>Baixo
+                                        </span>
+                                        <span th:if="${produto.quantidadeProduto > produto.estoqueMin}" class="badge badge-success">
+                                            <i data-lucide="trending-up" style="width: 14px; height: 14px; margin-right: 4px;"></i>OK
+                                        </span>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
