@@ -51,6 +51,11 @@
                         <i data-lucide="boxes" style="width: 20px; height: 20px;"></i>
                         <span style="font-weight: 500;">Estoque</span>
                     </a>
+
+                    <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/cadastro}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                        <i data-lucide="boxes" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Cadastros</span>
+                    </a>
                 </nav>
             </ul>
             <div class="navbar-user">
