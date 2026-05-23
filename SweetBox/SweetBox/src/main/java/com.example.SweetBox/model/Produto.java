@@ -1,25 +1,28 @@
 package com.example.SweetBox.model;
 
+import jakarta.persistence.Column; // 1. IMPORTADO: Necessário para a nova coluna
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
 
-@Entity // isso é uma tabela
+@Entity
 public class Produto {
 
-
-    @Id // Chave Primária
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID  automatico
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProduto;
 
     private String nomeProduto;
     private String descricao;
     private String categoria;
-    private Integer quantidadeProduto ;
+    private Integer quantidadeProduto;
     private Double valorUnidade;
     private Integer estoqueMin;
+
+    // 2. NOVO ATRIBUTO: Criado logo abaixo dos outros atributos
+    @Column(name = "ativo")
+    private Boolean ativo = true;
 
 
     public Produto(){}
@@ -31,7 +34,17 @@ public class Produto {
             String categoria,
             Integer quantidadeProduto,
             Double valorUnidade,
-            Integer estoqueMin ) {}
+            Integer estoqueMin,
+            Boolean ativo) {
+        this.idProduto = idProduto;
+        this.nomeProduto = nomeProduto;
+        this.descricao = descricao;
+        this.categoria = categoria;
+        this.quantidadeProduto = quantidadeProduto;
+        this.valorUnidade = valorUnidade;
+        this.estoqueMin = estoqueMin;
+        this.ativo = ativo;
+    }
 
     //GETS
     public Long getIdProduto() {
@@ -55,6 +68,11 @@ public class Produto {
     }
 
     public Integer getEstoqueMin() {return estoqueMin; }
+
+    // 3. NOVO GETTER: Adicionado aqui
+    public Boolean getAtivo() {
+        return ativo;
+    }
 
 
     //SETS
@@ -80,5 +98,8 @@ public class Produto {
 
     public void setEstoqueMin(Integer estoqueMin) {this.estoqueMin = estoqueMin;}
 
+    // 4. NOVO SETTER: Adicionado aqui no finalzinho
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
 }
-

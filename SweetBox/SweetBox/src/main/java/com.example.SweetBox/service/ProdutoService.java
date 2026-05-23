@@ -29,8 +29,10 @@ public class ProdutoService {
     }
 
     // Regra para Listar todos na tabela
-    public List<Produto> listarTodosProdutos() {
-        return produtoRepository.findAll();
+    public List<Produto> listarTodos() {
+        // Antes estava repository.findAll();
+        // Agora ele puxa só os ativos:
+        return produtoRepository.findByAtivoTrue();
     }
 
     // BUSCAR POR ID (editar)
@@ -40,10 +42,12 @@ public class ProdutoService {
     }
 
     public void deletarProduto(Long id) {
-        if (!produtoRepository.existsById(id)) {
-            throw new RuntimeException("Produto não encontrado!");
-        }
-        produtoRepository.deleteById(id);
+        // Busca o produto, muda para inativo (ativo = false) e salva de novo!
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+
+        produto.setAtivo(false);
+        produtoRepository.save(produto);
     }
 
     public Produto atualizarProduto(Long id, Produto produtoAtualizado) {
@@ -56,6 +60,21 @@ public class ProdutoService {
         produtoExistente.setQuantidadeProduto(produtoAtualizado.getQuantidadeProduto());
 
         return produtoRepository.save(produtoExistente);
+    }
+
+
+    // Metodo para listar os produtos na lixeira
+    public List<Produto> listarExcluidos() {
+        return produtoRepository.findByAtivoFalse();
+    }
+
+    // Metodo para trazer o produto de volta à vida
+    public void restaurarProduto(Long id) {
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+
+        produto.setAtivo(true); // Muda para true de novo
+        produtoRepository.save(produto); // Salva no banco
     }
 
 }

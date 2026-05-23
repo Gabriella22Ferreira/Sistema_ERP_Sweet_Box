@@ -39,7 +39,7 @@ public class ProdutoController {
         }  catch (IllegalArgumentException e) {
             // Se der erro de validação
             model.addAttribute("mensagemErro", e.getMessage());
-            model.addAttribute("produtos", produtoService.listarTodosProdutos());
+            model.addAttribute("produtos", produtoService.listarTodos());
             return "produtos";
         }
     }
@@ -60,7 +60,7 @@ public class ProdutoController {
         model.addAttribute("usuario", usuarioLogado);
 
         // 3. Busca lista no banco e envia para a tela
-        List<Produto> listaDeProdutos = produtoService.listarTodosProdutos();
+        List<Produto> listaDeProdutos = produtoService.listarTodos();
         model.addAttribute("produtos", listaDeProdutos);
 
         return "produtos";
@@ -88,6 +88,35 @@ public class ProdutoController {
         produtoService.deletarProduto(id);
 
         return "redirect:/produtos";
+    }
+
+    // NOVO: Abre a página da lixeira e lista os produtos inativos
+    @GetMapping("/produtos/lixeira")
+    public String abrirLixeira(Model model, HttpSession session) {
+        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+        if (usuarioLogado == null) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("usuario", usuarioLogado);
+
+        // Busca apenas os deletados (ativo = false)
+        List<Produto> excluidos = produtoService.listarExcluidos();
+        model.addAttribute("produtosExcluidos", excluidos);
+
+        return "lixeira"; // Vai procurar o arquivo lixeira.html
+    }
+
+    // NOVO: Processa a restauração do produto
+    @GetMapping("/produtos/restaurar/{id}")
+    public String restaurar(@PathVariable Long id, HttpSession session) {
+        if (session.getAttribute("usuarioLogado") == null) {
+            return "redirect:/";
+        }
+
+        produtoService.restaurarProduto(id);
+
+        return "redirect:/produtos/lixeira"; // Recarrega a lixeira
     }
 
 

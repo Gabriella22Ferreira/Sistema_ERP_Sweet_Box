@@ -54,7 +54,7 @@ public class VendaController {
         if (usuarioLogado == null) return "redirect:/";
 
         model.addAttribute("usuario", usuarioLogado);
-        model.addAttribute("produtos", produtoService.listarTodosProdutos());
+        model.addAttribute("produtos", produtoService.listarTodos());
         return "vendas";
     }
 

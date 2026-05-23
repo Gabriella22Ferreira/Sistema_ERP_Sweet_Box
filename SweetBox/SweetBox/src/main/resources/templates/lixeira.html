@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SweetBox - Produtos Arquivados</title>
+</head>
+<body>
+
+<div class="container">
+    <h2>📁 Produtos Arquivados</h2>
+    <p>Estes produtos foram arquivados, mas o histórico de vendas deles permanece salvo.</p>
+
+    <a href="/produtos" class="btn-voltar">⬅️ Voltar para Produtos</a>
+
+    <table border="1" style="margin-top: 20px; width: 100%; border-collapse: collapse;">
+        <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Preço Un.</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(produtosExcluidos)}">
+            <td colspan="5" style="text-align: center; padding: 10px;">Nenhum produto na lixeira.</td>
+        </tr>
+
+        <tr th:each="prod : ${produtosExcluidos}">
+            <td th:text="${prod.idProduto}"></td>
+            <td th:text="${prod.nomeProduto}"></td>
+            <td th:text="${prod.categoria}"></td>
+            <td th:text="${prod.valorUnidade}"></td>
+            <td>
+                <a th:href="@{/produtos/restaurar/{id}(id=${prod.idProduto})}"
+                   style="color: green; text-decoration: none; font-weight: bold;">
+                    🔄 Restaurar Produto
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
