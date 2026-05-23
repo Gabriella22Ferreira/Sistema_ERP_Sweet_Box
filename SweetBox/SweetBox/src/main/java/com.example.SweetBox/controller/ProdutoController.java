@@ -66,6 +66,7 @@ public class ProdutoController {
         return "produtos";
     }
 
+
     @PostMapping("/produtos/atualizar/{id}")
     public String atualizarProduto(@PathVariable Long id, Produto produto, HttpSession session) {
 
