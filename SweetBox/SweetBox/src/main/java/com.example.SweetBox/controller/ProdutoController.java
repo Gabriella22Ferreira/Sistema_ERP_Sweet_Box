@@ -120,4 +120,25 @@ public class ProdutoController {
     }
 
 
+
+    // ==========================================
+    // Abrir o Estoque
+    // ==========================================
+    @GetMapping("/estoque")
+    public String abrirEstoque(Model model, HttpSession session) {
+        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+        if (usuarioLogado == null) {
+            return "redirect:/";
+        }
+
+        // 1. Envia o usuário logado para manter o cabeçalho/menu funcionando
+        model.addAttribute("usuario", usuarioLogado);
+
+        // 2. Busca todos os produtos do banco e envia para a página
+        List<Produto> listaDeProdutos = produtoService.listarTodos();
+        model.addAttribute("produtos", listaDeProdutos);
+
+        return "estoque"; // Procura o arquivo estoque.html
+    }
+
 }
