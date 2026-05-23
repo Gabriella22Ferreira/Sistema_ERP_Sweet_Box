@@ -9,90 +9,109 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="page-wrapper">
-        <nav class="navbar">
-            <div class="navbar-content">
-                <a href="#" class="navbar-brand">
-                    <div class="navbar-logo">🍬</div>
-                    <div class="navbar-brand-text"><h1>SweetBox</h1><p>Sistema de Gestão</p></div>
+<div class="page-wrapper">
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="#" class="navbar-brand">
+                <div class="navbar-logo">🍬</div>
+                <div class="navbar-brand-text"><h1>SweetBox</h1>
+                    <p>Sistema de Gestão</p></div>
+            </a>
+            <ul class="navbar-menu" id="navMenu">
+                <nav style="display: flex; justify-content: center; gap: 0.5rem; padding-top: 1rem;">
+
+                    <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}"
+                       th:href="@{/dashboard}"
+                       style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;"
+                       onmouseover="this.style.background='rgba(0,0,0,0.05)'"
+                       onmouseout="this.style.background='transparent'">
+                        <i data-lucide="layout-dashboard" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Dashboard</span>
+                    </a>
+
+                    <a th:href="@{/vendas}"
+                       style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;"
+                       onmouseover="this.style.background='rgba(0,0,0,0.05)'"
+                       onmouseout="this.style.background='transparent'">
+                        <i data-lucide="shopping-cart" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Vendas</span>
+                    </a>
+
+                    <a th:href="@{/produtos}"
+                       style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;"
+                       onmouseover="this.style.background='rgba(0,0,0,0.05)'"
+                       onmouseout="this.style.background='transparent'">
+                        <i data-lucide="package" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Produtos</span>
+                    </a>
+
+                    <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}"
+                       th:href="@{/estoque}"
+                       style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;"
+                       onmouseover="this.style.background='rgba(0,0,0,0.05)'"
+                       onmouseout="this.style.background='transparent'">
+                        <i data-lucide="boxes" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Estoque</span>
+                    </a>
+
+
+                    <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
+
+                </nav>
+            </ul>
+            <div class="navbar-user">
+                <div class="navbar-user-info" id="userInfo">
+                    <p>Gestor SweetBox</p>
+                    <span th:text="${session.usuarioLogado != null ? session.usuarioLogado.nomeCompletoUsuario : 'Usuário'}">
+            Nome do Figma
+        </span>
+                </div>
+                <div class="navbar-avatar">👤</div>
+                <a class="btn-logout" th:href="@{/logout}" title="Sair"
+                   style="display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                    <i data-lucide="log-out" class="icon"></i>
                 </a>
-                <ul class="navbar-menu" id="navMenu">
-                    <nav style="display: flex; justify-content: center; gap: 0.5rem; padding-top: 1rem;">
-
-                        <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/dashboard}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="layout-dashboard" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Dashboard</span>
-                        </a>
-
-                        <a th:href="@{/vendas}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="shopping-cart" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Vendas</span>
-                        </a>
-
-                        <a th:href="@{/produtos}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="package" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Produtos</span>
-                        </a>
-
-                        <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/estoque}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="boxes" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Estoque</span>
-                        </a>
-
-
-                        <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
-
-                    </nav>
-                </ul>
-                <div class="navbar-user">
-                    <div class="navbar-user-info" id="userInfo">
-                        <p>Gestor SweetBox</p>
-                        <span th:text="${session.usuarioLogado != null ? session.usuarioLogado.nomeCompletoUsuario : 'Usuário'}">
-                            Nome do Figma
-                        </span>
-                    </div>
-                    <div class="navbar-avatar">👤</div>
-                    <button class="btn-logout" th:href="@{/logout}"><i data-lucide="log-out" class="icon"></i></button>
+            </div>
+        </div>
+    </nav>
+    <main class="main-content">
+        <div class="container">
+            <div class="flex-between mb-4">
+                <div>
+                    <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Dashboard</h2>
+                    <p style="color: var(--muted-foreground);">Visão geral da sua loja</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="btn" id="btnDiario" onclick="setPeriodo('diario')">Diário</button>
+                    <button class="btn" id="btnMensal" onclick="setPeriodo('mensal')">Mensal</button>
+                    <button class="btn" id="btnAnual" onclick="setPeriodo('anual')">Anual</button>
                 </div>
             </div>
-        </nav>
-        <main class="main-content">
-            <div class="container">
-                <div class="flex-between mb-4">
-                    <div>
-                        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Dashboard</h2>
-                        <p style="color: var(--muted-foreground);">Visão geral da sua loja</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button class="btn" id="btnDiario" onclick="setPeriodo('diario')">Diário</button>
-                        <button class="btn" id="btnMensal" onclick="setPeriodo('mensal')">Mensal</button>
-                        <button class="btn" id="btnAnual" onclick="setPeriodo('anual')">Anual</button>
-                    </div>
-                </div>
-                <div class="stats-grid" id="statsCards"></div>
-                <div class="grid grid-cols-sm-2 gap-3 mb-4">
-                    <div class="card">
-                        <h3 class="card-title" id="tituloVendas">Vendas por Hora</h3>
-                        <canvas id="chartVendas"></canvas>
-                    </div>
-                    <div class="card">
-                        <h3 class="card-title" id="tituloReceita">Receita por Hora</h3>
-                        <canvas id="chartReceita"></canvas>
-                    </div>
+            <div class="stats-grid" id="statsCards"></div>
+            <div class="grid grid-cols-sm-2 gap-3 mb-4">
+                <div class="card">
+                    <h3 class="card-title" id="tituloVendas">Vendas por Hora</h3>
+                    <canvas id="chartVendas"></canvas>
                 </div>
                 <div class="card">
-                    <div class="flex gap-2 mb-3">
-                        <i data-lucide="award" class="icon-lg" style="color: var(--primary);"></i>
-                        <h3 class="card-title" id="tituloProdutos">Produtos Mais Vendidos</h3>
-                    </div>
-                    <div id="produtosMaisVendidos"></div>
+                    <h3 class="card-title" id="tituloReceita">Receita por Hora</h3>
+                    <canvas id="chartReceita"></canvas>
                 </div>
             </div>
-        </main>
-    </div>
+            <div class="card">
+                <div class="flex gap-2 mb-3">
+                    <i data-lucide="award" class="icon-lg" style="color: var(--primary);"></i>
+                    <h3 class="card-title" id="tituloProdutos">Produtos Mais Vendidos</h3>
+                </div>
+                <div id="produtosMaisVendidos"></div>
+            </div>
+        </div>
+    </main>
+</div>
 
-    <script src="js/dashboard.js"></script>
-    <script>lucide.createIcons(); carregarMenu();</script>
+<script src="js/dashboard.js"></script>
+<script>lucide.createIcons();
+carregarMenu();</script>
 
 </body>
 </html>

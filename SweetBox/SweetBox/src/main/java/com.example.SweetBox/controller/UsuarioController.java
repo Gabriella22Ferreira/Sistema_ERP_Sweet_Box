@@ -28,17 +28,17 @@ public class UsuarioController {
     // ==========================================
 
     @GetMapping("/")
-    public String entradaInicio(){
+    public String entradaInicio() {
         return "index";
     }
 
     @GetMapping("/cadastro")
-    public String abrirTelaDeCadastro(){
+    public String abrirTelaDeCadastro() {
         return "cadastro";
     }
 
     @PostMapping("/cadastro")
-    public String cadastrarUsuario(Usuario usuario, org.springframework.ui.Model model){
+    public String cadastrarUsuario(Usuario usuario, org.springframework.ui.Model model) {
         try {
             // Tenta
             usuarioService.salvarNovoUsuario(usuario);
@@ -53,8 +53,6 @@ public class UsuarioController {
             return "cadastro"; // Recarrega exibindo o erro
         }
     }
-
-
 
     // ==========================================
     // ROTA DE LOGIN
@@ -95,19 +93,28 @@ public class UsuarioController {
     //ir para o estoque
     @GetMapping("/estoque")
     public String paginaEstoque() {
-
         return "estoque";
     }
 
+    // ==========================================
+    // ROTAS DE LOGOUT (Sair do Sistema)
+    // ==========================================
 
-    // ==========================================
-    // ROTA DE LOGOUT (Sair do Sistema)
-    // ==========================================
+    // Captura quando o botão envia um comando POST em segundo plano
+    @PostMapping("/logout")
+    public String realizarLogoutPost(HttpSession session) {
+        if (session != null) {
+            session.invalidate(); // Limpa a sessão da memória do servidor
+        }
+        return "redirect:/"; // Redireciona para a tela inicial/login
+    }
+
+    // Captura se o usuário for deslogado via link GET direto ou barra de endereços
     @GetMapping("/logout")
-    public String fazerLogout(jakarta.servlet.http.HttpSession session) {
-        // fecha a sessão.
-        session.invalidate();
-
-        return "redirect:/";
+    public String realizarLogoutGet(HttpSession session) {
+        if (session != null) {
+            session.invalidate(); // Limpa a sessão por segurança
+        }
+        return "redirect:/"; // Redireciona para a tela inicial/login
     }
 }
