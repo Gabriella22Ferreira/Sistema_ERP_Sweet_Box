@@ -75,7 +75,7 @@ public class UsuarioController {
 
         } catch (IllegalArgumentException e) {
             model.addAttribute("erroLogin", e.getMessage());
-            return "/login";
+            return "index";
         }
     }
 

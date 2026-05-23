@@ -1,3 +1,20 @@
+
+///////////OLHOS PARA SENHA
+//document.getElementById('togglePassword').addEventListener('click', function() {
+//            const senhaInput = document.getElementById('senha');
+//            const eyeIcon = document.getElementById('eyeIcon');
+//            if (senhaInput.type === 'password') {
+//                senhaInput.type = 'text';
+//                eyeIcon.setAttribute('data-lucide', 'eye-off');
+//            } else {
+//                senhaInput.type = 'password';
+//                eyeIcon.setAttribute('data-lucide', 'eye');
+//            }
+//            lucide.createIcons();
+//        });
+
+
+
 ////////////// NAVBAR
 function carregarMenu(usuario) {
     const menu = document.getElementById('navMenu');
