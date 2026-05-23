@@ -8,135 +8,152 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <div class="page-wrapper">
-        <nav class="navbar">
-            <div class="navbar-content">
-                <a href="#" class="navbar-brand">
-                    <div class="navbar-logo">🍬</div>
-                    <div class="navbar-brand-text">
-                        <h1>SweetBox</h1>
-                        <p>Sistema de Gestão</p>
-                    </div>
-                </a>
-                <ul class="navbar-menu" id="navMenu">
-                    <nav style="display: flex; justify-content: center; gap: 0.5rem; padding-top: 1rem;">
+<div class="page-wrapper">
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="#" class="navbar-brand">
+                <div class="navbar-logo">🍬</div>
+                <div class="navbar-brand-text">
+                    <h1>SweetBox</h1>
+                    <p>Sistema de Gestão</p>
+                </div>
+            </a>
+            <ul class="navbar-menu" id="navMenu">
+                <nav style="display: flex; justify-content: center; gap: 0.5rem; padding-top: 1rem;">
 
-                        <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/dashboard}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="layout-dashboard" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Dashboard</span>
-                        </a>
+                    <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/dashboard}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                        <i data-lucide="layout-dashboard" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Dashboard</span>
+                    </a>
 
-                        <a th:href="@{/vendas}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="shopping-cart" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Vendas</span>
-                        </a>
+                    <a th:href="@{/vendas}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                        <i data-lucide="shopping-cart" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Vendas</span>
+                    </a>
 
-                        <a th:href="@{/produtos}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="package" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Produtos</span>
-                        </a>
+                    <a th:href="@{/produtos}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                        <i data-lucide="package" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Produtos</span>
+                    </a>
 
-                        <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/estoque}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="boxes" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Estoque</span>
-                        </a>
+                    <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/estoque}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                        <i data-lucide="boxes" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Estoque</span>
+                    </a>
 
+                    <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
 
-
-                        <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
-
-                    </nav>
-                </ul>
-                <div class="navbar-user">
-                    <div class="navbar-user-info" id="userInfo">
-                        <p>Gestor SweetBox</p>
-                        <span th:text="${session.usuarioLogado != null ? session.usuarioLogado.nomeCompletoUsuario : 'Usuário'}">
+                </nav>
+            </ul>
+            <div class="navbar-user">
+                <div class="navbar-user-info" id="userInfo">
+                    <p>Gestor SweetBox</p>
+                    <span th:text="${session.usuarioLogado != null ? session.usuarioLogado.nomeCompletoUsuario : 'Usuário'}">
                             Nome do Figma
                         </span>
-                    </div>
-                    <div class="navbar-avatar" id="userAvatar">👤</div>
-                    <button class="btn-logout" onclick="logout()" title="Sair">
-                        <i data-lucide="log-out" class="icon"></i>
-                    </button>
                 </div>
+                <div class="navbar-avatar" id="userAvatar">👤</div>
+                <button class="btn-logout" onclick="logout()" title="Sair">
+                    <i data-lucide="log-out" class="icon"></i>
+                </button>
             </div>
-        </nav>
-        <main class="main-content">
-            <div class="container">
-                <div class="flex-between mb-4">
-                    <div>
-                        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Ponto de Venda</h2>
-                        <p style="color: var(--muted-foreground);">Realize vendas e gerencie o carrinho</p>
-                    </div>
-                    <button class="btn btn-secondary" onclick="abrirHistorico()">
-                        <i data-lucide="history" class="icon"></i> Histórico
-                    </button>
-                </div>
-                <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 1.5rem;">
-                    <div>
-                        <div class="card mb-3">
-                            <input type="text" id="busca" class="form-input" placeholder="Buscar produtos..." oninput="filtrarProdutos()">
-                        </div>
-                        <div class="grid grid-cols-sm-2 gap-2" id="listaProdutos">
-                            <div class="grid-lista" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
-
-                                <div th:if="${#lists.isEmpty(produtos)}" class="text-center" style="grid-column: 1 / -1;">
-                                    <p>Nenhum produto cadastrado para vender.</p>
-                                </div>
-
-                                <div th:each="p : ${produtos}" class="card" style="cursor: pointer; transition: 0.2s;"
-                                     onmouseover="this.style.transform='scale(1.05)'"
-                                     onmouseout="this.style.transform='scale(1)'"
-                                     th:onclick="adicionarAoCarrinho([[${p.idProduto}]], [[${p.nomeProduto}]], [[${p.valorUnidade}]])">
-
-                                    <div style="text-align: center;">
-                                        <i data-lucide="package" class="icon" style="margin-bottom: 0.5rem; color: var(--primary);"></i>
-                                        <h4 style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;" th:text="${p.nomeProduto}">Nome</h4>
-                                        <span style="color: var(--primary); font-weight: bold;" th:text="'R$ ' + ${p.valorUnidade}">R$ 0,00</span>
-                                        <p style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.5rem;" th:text="'Estoque: ' + ${p.quantidadeProduto}">Estoque: 0</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="card" style="position: sticky; top: 1rem;">
-                            <div class="flex gap-2 mb-3">
-                                <i data-lucide="shopping-cart" class="icon-lg" style="color: var(--primary);"></i>
-                                <h3 style="font-size: 1.25rem; font-weight: 700;">Carrinho</h3>
-                            </div>
-                            <div id="carrinhoItens" style="max-height: 400px; overflow-y: auto;">
-                                <div id="itensCarrinho" style="min-height: 200px; max-height: 400px; overflow-y: auto; margin-bottom: 1rem;">
-                                    <p style="text-align: center; color: var(--muted-foreground); margin-top: 2rem;">O carrinho está vazio</p>
-                                </div>
-                            </div>
-                            <div id="carrinhoFooter" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-                                <div class="flex-between mb-3">
-                                    <span style="font-size: 1.125rem; font-weight: 600;">Total:</span>
-                                    <span id="totalValor" style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">R$ 0,00</span>
-                                </div>
-                                <button class="btn btn-primary" style="width: 100%;" onclick="finalizarVenda()">
-                                    <i data-lucide="check" class="icon"></i> Finalizar Venda
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-    <div class="modal-overlay" id="modalHistorico" style="display: none;">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title">Histórico de Vendas</h3>
-                <button class="modal-close" onclick="fecharHistorico()">×</button>
-            </div>
-            <div id="historicoConteudo" style="max-height: 500px; overflow-y: auto;"></div>
         </div>
+    </nav>
+    <main class="main-content">
+        <div class="container">
+            <div class="flex-between mb-4">
+                <div>
+                    <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Ponto de Venda</h2>
+                    <p style="color: var(--muted-foreground);">Realize vendas e gerencie o carrinho</p>
+                </div>
+                <button class="btn btn-secondary" onclick="abrirHistorico()">
+                    <i data-lucide="history" class="icon"></i> Histórico
+                </button>
+            </div>
+            <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+                <div>
+                    <div class="card mb-3">
+                        <input type="text" id="busca" class="form-input" placeholder="Buscar produtos..." oninput="filtrarProdutos()">
+                    </div>
+                    <div class="grid grid-cols-sm-2 gap-2" id="listaProdutos">
+                        <div class="grid-lista" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
+
+                            <div th:if="${#lists.isEmpty(produtos)}" class="text-center" style="grid-column: 1 / -1;">
+                                <p>Nenhum produto cadastrado para vender.</p>
+                            </div>
+
+                            <div th:each="p : ${produtos}" class="card" style="cursor: pointer; transition: 0.2s;"
+                                 onmouseover="this.style.transform='scale(1.05)'"
+                                 onmouseout="this.style.transform='scale(1)'"
+                                 th:onclick="adicionarAoCarrinho([[${p.idProduto}]], [[${p.nomeProduto}]], [[${p.valorUnidade}]])">
+
+                                <div style="text-align: center;">
+                                    <i data-lucide="package" class="icon" style="margin-bottom: 0.5rem; color: var(--primary);"></i>
+                                    <h4 style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;" th:text="${p.nomeProduto}">Nome</h4>
+                                    <span style="color: var(--primary); font-weight: bold;" th:text="'R$ ' + ${p.valorUnidade}">R$ 0,00</span>
+                                    <p style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.5rem;" th:text="'Estoque: ' + ${p.quantidadeProduto}">Estoque: 0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card" style="position: sticky; top: 1rem;">
+                        <div class="flex gap-2 mb-3">
+                            <i data-lucide="shopping-cart" class="icon-lg" style="color: var(--primary);"></i>
+                            <h3 style="font-size: 1.25rem; font-weight: 700;">Carrinho</h3>
+                        </div>
+                        <div id="carrinhoItens" style="max-height: 400px; overflow-y: auto;">
+                            <div id="itensCarrinho" style="min-height: 200px; max-height: 400px; overflow-y: auto; margin-bottom: 1rem;">
+                                <p style="text-align: center; color: var(--muted-foreground); margin-top: 2rem;">O carrinho está vazio</p>
+                            </div>
+                        </div>
+                        <div id="carrinhoFooter" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                            <div class="flex-between mb-3">
+                                <span style="font-size: 1.125rem; font-weight: 600;">Total:</span>
+                                <span id="totalValor" style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">R$ 0,00</span>
+                            </div>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="finalizarVenda()">
+                                <i data-lucide="check" class="icon"></i> Finalizar Venda
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<div class="modal-overlay" id="modalHistorico" style="display: none;">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">Histórico de Vendas</h3>
+            <button class="modal-close" onclick="fecharHistorico()">×</button>
+        </div>
+        <div id="historicoConteudo" style="max-height: 500px; overflow-y: auto;"></div>
     </div>
+</div>
 
 <script src="js/all.js"></script>
-    <script>lucide.createIcons(); carregarMenu();</script>
+<script>lucide.createIcons(); carregarMenu();</script>
 
+<script>
+    function filtrarProdutos() {
+        const input = document.getElementById('busca');
+        const termoBusca = input.value.toLowerCase().trim();
+
+        // Alvo cirúrgico: apenas os minicards de doces dentro do painel esquerdo (.grid-lista .card)
+        const cards = document.querySelectorAll('.grid-lista .card');
+
+        cards.forEach(card => {
+            const textoCard = card.textContent.toLowerCase();
+
+            if (textoCard.includes(termoBusca)) {
+                card.style.display = "";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    }
+</script>
 </body>
 </html>

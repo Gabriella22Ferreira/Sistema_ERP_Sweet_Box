@@ -8,121 +8,144 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <div class="page-wrapper">
-        <nav class="navbar">
-            <div class="navbar-content">
-                <a href="#" class="navbar-brand">
-                    <div class="navbar-logo">🍬</div>
-                    <div class="navbar-brand-text"><h1>SweetBox</h1><p>Sistema de Gestão</p></div>
-                </a>
-                <ul class="navbar-menu" id="navMenu">
-                    <nav style="display: flex; justify-content: center; gap: 0.5rem; padding-top: 1rem;">
+<div class="page-wrapper">
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="#" class="navbar-brand">
+                <div class="navbar-logo">🍬</div>
+                <div class="navbar-brand-text"><h1>SweetBox</h1><p>Sistema de Gestão</p></div>
+            </a>
+            <ul class="navbar-menu" id="navMenu">
+                <nav style="display: flex; justify-content: center; gap: 0.5rem; padding-top: 1rem;">
 
-                        <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/dashboard}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="layout-dashboard" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Dashboard</span>
-                        </a>
+                    <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/dashboard}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                        <i data-lucide="layout-dashboard" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Dashboard</span>
+                    </a>
 
-                        <a th:href="@{/vendas}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="shopping-cart" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Vendas</span>
-                        </a>
+                    <a th:href="@{/vendas}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                        <i data-lucide="shopping-cart" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Vendas</span>
+                    </a>
 
-                        <a th:href="@{/produtos}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="package" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Produtos</span>
-                        </a>
+                    <a th:href="@{/produtos}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                        <i data-lucide="package" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Produtos</span>
+                    </a>
 
-                        <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/estoque}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
-                            <i data-lucide="boxes" style="width: 20px; height: 20px;"></i>
-                            <span style="font-weight: 500;">Estoque</span>
-                        </a>
+                    <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/estoque}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                        <i data-lucide="boxes" style="width: 20px; height: 20px;"></i>
+                        <span style="font-weight: 500;">Estoque</span>
+                    </a>
 
-                        <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
+                    <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
 
-                    </nav>
-                </ul>
-                <div class="navbar-user">
-                    <div class="navbar-user-info" id="userInfo">
-                        <p>Gestor SweetBox</p>
-                        <span th:text="${session.usuarioLogado != null ? session.usuarioLogado.nomeCompletoUsuario : 'Usuário'}">
+                </nav>
+            </ul>
+            <div class="navbar-user">
+                <div class="navbar-user-info" id="userInfo">
+                    <p>Gestor SweetBox</p>
+                    <span th:text="${session.usuarioLogado != null ? session.usuarioLogado.nomeCompletoUsuario : 'Usuário'}">
                             Nome do Figma
                         </span>
-                    </div>
-                    <div class="navbar-avatar">👤</div>
-                    <button class="btn-logout" onclick="logout()"><i data-lucide="log-out" class="icon"></i></button>
                 </div>
+                <div class="navbar-avatar">👤</div>
+                <button class="btn-logout" onclick="logout()"><i data-lucide="log-out" class="icon"></i></button>
             </div>
-        </nav>
-        <main class="main-content">
-            <div class="container">
-                <div class="flex-between mb-4">
-                    <div>
-                        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Controle de Estoque</h2>
-                        <p style="color: var(--muted-foreground);">Gerencie entradas e saídas de produtos</p>
-                    </div>
-                    <button class="btn btn-primary" onclick="abrirModal()">
-                        <i data-lucide="plus" class="icon"></i> Registrar Entrada
-                    </button>
-                </div>
-                <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 1.5rem;">
-                    <div>
-                        <div class="card mb-3">
-                            <input type="text" id="busca" class="form-input" placeholder="Buscar produtos..." oninput="filtrarProdutos()">
-                        </div>
-                        <div class="card table-wrapper">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Produto</th>
-                                        <th style="text-align: center;">Estoque Atual</th>
-                                        <th style="text-align: center;">Estoque Mínimo</th>
-                                        <th style="text-align: center;">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tabelaProdutos"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="card">
-                            <h3 class="card-title mb-3">Últimas Movimentações</h3>
-                            <div id="movimentacoes" style="max-height: 400px; overflow-y: auto;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-    <div class="modal-overlay" id="modalEntrada">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title">Registrar Entrada de Produto</h3>
-                <button class="modal-close" onclick="fecharModal()">×</button>
-            </div>
-            <form id="entradaForm">
-                <div class="form-group">
-                    <label class="form-label">Produto *</label>
-                    <select id="produtoId" class="form-select" required></select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Quantidade *</label>
-                    <input type="number" min="1" id="quantidade" class="form-input" placeholder="Ex: 50" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Observação</label>
-                    <textarea id="observacao" class="form-textarea" rows="3" placeholder="Ex: Compra do fornecedor X..."></textarea>
-                </div>
-                <div class="flex gap-2 mt-4">
-                    <button type="button" class="btn btn-outline" style="flex: 1;" onclick="fecharModal()">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">Registrar</button>
-                </div>
-            </form>
         </div>
-    </div>
+    </nav>
 
-    <script src="js/all.js"></script>
-    <script src="js/estoque.js"></script>
-    <script>lucide.createIcons(); carregarMenu();</script>
+    <main class="main-content">
+        <div class="container">
+            <div class="flex-between mb-4">
+                <div>
+                    <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Controle de Estoque</h2>
+                    <p style="color: var(--muted-foreground);">Gerencie entradas e saídas de produtos</p>
+                </div>
+                <button class="btn btn-primary" onclick="abrirModal()">
+                    <i data-lucide="plus" class="icon"></i> Registrar Entrada
+                </button>
+            </div>
+            <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+                <div>
+                    <div class="card mb-3">
+                        <input type="text" id="busca" class="form-input" placeholder="Buscar produtos..." oninput="filtrarProdutos()">
+                    </div>
+                    <div class="card table-wrapper">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th style="text-align: center;">Estoque Atual</th>
+                                <th style="text-align: center;">Estoque Mínimo</th>
+                                <th style="text-align: center;">Status</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tabelaProdutos">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <div class="card">
+                        <h3 class="card-title mb-3">Últimas Movimentações</h3>
+                        <div id="movimentacoes" style="max-height: 400px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal-overlay" id="modalEntrada">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">Registrar Entrada de Produto</h3>
+            <button class="modal-close" onclick="fecharModal()">×</button>
+        </div>
+        <form id="entradaForm">
+            <div class="form-group">
+                <label class="form-label">Produto *</label>
+                <select id="produtoId" class="form-select" required></select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Quantidade *</label>
+                <input type="number" min="1" id="quantidade" class="form-input" placeholder="Ex: 50" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Observação</label>
+                <textarea id="observacao" class="form-textarea" rows="3" placeholder="Ex: Compra do fornecedor X..."></textarea>
+            </div>
+            <div class="flex gap-2 mt-4">
+                <button type="button" class="btn btn-outline" style="flex: 1;" onclick="fecharModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Registrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/all.js"></script>
+<script src="js/estoque.js"></script>
+<script>lucide.createIcons(); carregarMenu();</script>
+
+<script>
+    function filtrarProdutos() {
+        const input = document.getElementById('busca');
+        const termoBusca = input.value.toLowerCase().trim();
+
+        // Varre estritamente as linhas de dados da tabela, ignorando o cabeçalho e os cards estruturais
+        const linhasTabela = document.querySelectorAll('#tabelaProdutos tr, tbody tr');
+
+        linhasTabela.forEach(linha => {
+            const textoLinha = linha.textContent.toLowerCase();
+
+            if (textoLinha.includes(termoBusca)) {
+                linha.style.display = "";
+            } else {
+                linha.style.display = "none";
+            }
+        });
+    }
+</script>
 </body>
 </html>
