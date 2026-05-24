@@ -9,30 +9,44 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// Funções do Olho da Senha (Usadas no login e cadastro)
+
+// Funções do Olho da Senha (Lógica Limpa)
 const togglePassword = document.getElementById('togglePassword');
 if (togglePassword) {
     togglePassword.addEventListener('click', function() {
         const senhaInput = document.getElementById('senha');
-        const eyeIcon = document.getElementById('eyeIcon');
+
         if (senhaInput.type === 'password') {
             senhaInput.type = 'text';
-            eyeIcon.setAttribute('data-lucide', 'eye-off');
+            // Desenha um ícone novo de "olho fechado" dentro do botão
+            this.innerHTML = '<i data-lucide="eye-off" class="icon"></i>';
         } else {
             senhaInput.type = 'password';
-            eyeIcon.setAttribute('data-lucide', 'eye');
+            // Desenha o "olho normal" dentro do botão
+            this.innerHTML = '<i data-lucide="eye" class="icon"></i>';
         }
+        // Pede ao Lucide para transformar a tag <i> que acabamos de colocar na imagem final
         lucide.createIcons();
     });
 }
 
+// Funções do Olho da Confirmação de Senha (Lógica Limpa)
 const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
 if (toggleConfirmPassword) {
     toggleConfirmPassword.addEventListener('click', function() {
         const confirmarSenhaInput = document.getElementById('confirmarSenha');
-        const confirmEyeIcon = document.getElementById('confirmEyeIcon');
-        confirmarSenhaInput.type = confirmarSenhaInput.type === 'password' ? 'text' : 'password';
-        confirmEyeIcon.setAttribute('data-lucide', confirmarSenhaInput.type === 'password' ? 'eye' : 'eye-off');
+
+        if (confirmarSenhaInput.type === 'password') {
+            confirmarSenhaInput.type = 'text';
+            // Desenha um ícone novo de "olho fechado" dentro do botão
+            this.innerHTML = '<i data-lucide="eye-off" class="icon"></i>';
+        } else {
+            confirmarSenhaInput.type = 'password';
+            // Desenha o "olho normal" dentro do botão
+            this.innerHTML = '<i data-lucide="eye" class="icon"></i>';
+        }
+
+        // Pede ao Lucide para transformar a tag <i> que acabamos de colocar na imagem final
         lucide.createIcons();
     });
 }
