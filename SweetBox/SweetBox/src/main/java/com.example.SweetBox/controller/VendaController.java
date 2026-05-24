@@ -60,8 +60,6 @@ public class VendaController {
 
 
 
-
-
     @PostMapping("/vendas/finalizar")
     public ResponseEntity<String> finalizarCompra(@RequestBody List<CarrinhoItem> itensDoCarrinho, HttpSession session) {
         System.out.println("=> SERVIDOR RECEBEU O PEDIDO DE VENDA!");

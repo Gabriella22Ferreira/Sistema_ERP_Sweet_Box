@@ -2,21 +2,33 @@ package com.example.SweetBox.controller;
 
 import com.example.SweetBox.model.Produto;
 import com.example.SweetBox.model.Usuario;
+import com.example.SweetBox.repository.ProdutoRepository;
 import com.example.SweetBox.service.ProdutoService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
+import com.example.SweetBox.model.Movimentacao;
+import com.example.SweetBox.repository.MovimentacaoRepository;
+import java.time.LocalDateTime;
+
+import java.util.ArrayList;
 import java.util.List;
-import org.springframework.web.bind.annotation.PathVariable;
+import java.util.Map;
 
 @Controller
 public class ProdutoController {
 
     @Autowired
     private ProdutoService produtoService;
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private MovimentacaoRepository movimentacaoRepository;
 
     // ==========================================
     // Cadastro de produtos
@@ -131,154 +143,38 @@ public class ProdutoController {
 
         return "estoque";
     }
-}
 
 
+    @PostMapping("/estoque/entrada")
+    @ResponseBody
+    public ResponseEntity<String> registrarEntrada(@RequestBody Map<String, String> payload) {
+        Long id = Long.parseLong(payload.get("id"));
+        int qtd = Integer.parseInt(payload.get("quantidade"));
+        String obs = payload.get("observacao");
 
+        Produto produto = produtoRepository.findById(id).orElse(null);
+        if (produto == null) return ResponseEntity.badRequest().body("Produto não encontrado");
 
-/*
-package com.example.SweetBox.controller;
+        // 1. Atualiza estoque
+        produto.setQuantidadeProduto(produto.getQuantidadeProduto() + qtd);
+        produtoRepository.save(produto);
 
-//import ch.qos.logback.core.model.Model;
-import com.example.SweetBox.model.Produto;
-import com.example.SweetBox.model.Usuario;
-import com.example.SweetBox.service.ProdutoService;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import java.util.List;
-import org.springframework.web.bind.annotation.PathVariable;
+        // 2. Registra a Movimentação (Histórico)
+        Movimentacao mov = new Movimentacao();
+        mov.setProdutoNome(produto.getNomeProduto());
+        mov.setQuantidade(qtd);
+        mov.setTipo("entrada");
+        mov.setData(LocalDateTime.now());
+        mov.setObservacao(obs);
+        movimentacaoRepository.save(mov);
 
-
-@Controller
-public class ProdutoController {
-
-    @Autowired
-    private ProdutoService produtoService;
-
-
-    // ==========================================
-    // Cadastro de produtos
-    // ==========================================
-
-    @PostMapping("/produtos/cadastrar")
-    public String cadastrarProduto(Produto produto, Model model, HttpSession session) {
-        if(session.getAttribute("usuarioLogado") == null) {
-            return "redirect:/";
-        }
-
-        try{
-            produtoService.salvarNovoProduto(produto);
-            System.out.println("Produto salvo com sucesso!");
-            return "redirect:/produtos?sucesso=true";
-
-        }  catch (IllegalArgumentException e) {
-            // Se der erro de validação
-            model.addAttribute("mensagemErro", e.getMessage());
-            model.addAttribute("produtos", produtoService.listarTodos());
-            return "produtos";
-        }
+        return ResponseEntity.ok("Entrada registrada!");
     }
 
-
-    // ==========================================
-    // Abrir em produtos e mostrar produtos em produtos depois do cadastro
-    // ==========================================
-
-    @GetMapping("/produtos")
-    public String abrirProdutos(Model model, HttpSession session) {
-        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-        if (usuarioLogado == null) {
-            return "redirect:/";
-        }
-
-        // 2. Envia o usuário para a tela (para o menu funcionar)
-        model.addAttribute("usuario", usuarioLogado);
-
-        // 3. Busca lista no banco e envia para a tela
-        List<Produto> listaDeProdutos = produtoService.listarTodos();
-        model.addAttribute("produtos", listaDeProdutos);
-
-        return "produtos";
+    @GetMapping("/estoque/historico")
+    @ResponseBody
+    public List<Movimentacao> buscarHistorico() {
+        return movimentacaoRepository.findAllByOrderByDataDesc();
     }
-
-
-    @PostMapping("/produtos/atualizar/{id}")
-    public String atualizarProduto(@PathVariable Long id, Produto produto, HttpSession session) {
-
-        if (session.getAttribute("usuarioLogado") == null) {
-            return "redirect:/";
-        }
-
-        produtoService.atualizarProduto(id, produto);
-
-        return "redirect:/produtos";
-    }
-
-    @GetMapping("/produtos/deletar/{id}")
-    public String deletar(@PathVariable Long id, HttpSession session) {
-
-        if (session.getAttribute("usuarioLogado") == null) {
-            return "redirect:/";
-        }
-
-        produtoService.deletarProduto(id);
-
-        return "redirect:/produtos";
-    }
-
-    // NOVO: Abre a página da lixeira e lista os produtos inativos
-    @GetMapping("/produtos/lixeira")
-    public String abrirLixeira(Model model, HttpSession session) {
-        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-        if (usuarioLogado == null) {
-            return "redirect:/";
-        }
-
-        model.addAttribute("usuario", usuarioLogado);
-
-        // Busca apenas os deletados (ativo = false)
-        List<Produto> excluidos = produtoService.listarExcluidos();
-        model.addAttribute("produtosExcluidos", excluidos);
-
-        return "lixeira"; // Vai procurar o arquivo lixeira.html
-    }
-
-    // NOVO: Processa a restauração do produto
-    @GetMapping("/produtos/restaurar/{id}")
-    public String restaurar(@PathVariable Long id, HttpSession session) {
-        if (session.getAttribute("usuarioLogado") == null) {
-            return "redirect:/";
-        }
-
-        produtoService.restaurarProduto(id);
-
-        return "redirect:/produtos/lixeira"; // Recarrega a lixeira
-    }
-
-
-
-    // ==========================================
-    // Abrir o Estoque
-    // ==========================================
-
-    @GetMapping("/estoque")
-    public String abrirEstoque(Model model, HttpSession session) {
-        if (session.getAttribute("usuarioLogado") == null) {
-            return "redirect:/";
-        }
-
-        model.addAttribute("produtos", produtoService.listarTodos());
-
-        List<Produto> listaDeProdutos = produtoService.listarTodos();
-        model.addAttribute("produtos", listaDeProdutos);
-
-        return "estoque";
-    }
-
 
 }
-*/

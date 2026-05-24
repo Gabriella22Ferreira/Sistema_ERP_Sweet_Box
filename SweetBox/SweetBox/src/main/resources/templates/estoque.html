@@ -157,7 +157,13 @@
         <form id="entradaForm">
             <div class="form-group">
                 <label class="form-label">Produto *</label>
-                <select id="produtoId" class="form-select" required></select>
+                <select id="produtoId" class="form-select" required>
+                    <option value="">Selecione um produto</option>
+                    <option th:each="p : ${produtos}"
+                            th:value="${p.idProduto}"
+                            th:text="${p.nomeProduto}">
+                    </option>
+                </select>
             </div>
             <div class="form-group">
                 <label class="form-label">Quantidade *</label>
@@ -178,8 +184,7 @@
 
 <script src="js/all.js"></script>
 <script src="js/estoque.js"></script>
-<script>lucide.createIcons();
-carregarMenu();</script>
+<script>lucide.createIcons();</script>
 
 <script>
     function filtrarProdutos() {
