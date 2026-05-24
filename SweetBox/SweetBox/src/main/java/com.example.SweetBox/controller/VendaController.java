@@ -58,8 +58,12 @@ public class VendaController {
         return "vendas";
     }
 
+
+
+
+
     @PostMapping("/vendas/finalizar")
-    public ResponseEntity<String> finalizarVenda(@RequestBody List<CarrinhoItem> itensDoCarrinho, HttpSession session) {
+    public ResponseEntity<String> finalizarCompra(@RequestBody List<CarrinhoItem> itensDoCarrinho, HttpSession session) {
         System.out.println("=> SERVIDOR RECEBEU O PEDIDO DE VENDA!");
 
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
@@ -99,8 +103,6 @@ public class VendaController {
         System.out.println("=> VENDA SALVA NO BANCO! Total: R$ " + totalDaVenda);
         return ResponseEntity.ok("Venda processada com sucesso");
     }
-
-
 
 
 
