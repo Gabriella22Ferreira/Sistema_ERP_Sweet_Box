@@ -1,5 +1,144 @@
 package com.example.SweetBox.controller;
 
+import com.example.SweetBox.model.Produto;
+import com.example.SweetBox.model.Usuario;
+import com.example.SweetBox.service.ProdutoService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@Controller
+public class ProdutoController {
+
+    @Autowired
+    private ProdutoService produtoService;
+
+    // ==========================================
+    // Cadastro de produtos
+    // ==========================================
+    @PostMapping("/produtos/cadastrar")
+    public String cadastrarProduto(Produto produto, Model model, HttpSession session) {
+        if(session.getAttribute("usuarioLogado") == null) {
+            return "redirect:/";
+        }
+
+        try{
+            produtoService.salvarNovoProduto(produto);
+            System.out.println("Produto salvo com sucesso!");
+            return "redirect:/produtos?sucesso=true";
+
+        }  catch (IllegalArgumentException e) {
+            // Se der erro de validação
+            model.addAttribute("mensagemErro", e.getMessage());
+            model.addAttribute("produtos", produtoService.listarTodos());
+            return "produtos";
+        }
+    }
+
+
+    // ==========================================
+    // Abrir em produtos e mostrar produtos na tela
+    // ==========================================
+    @GetMapping("/produtos")
+    public String abrirProdutos(Model model, HttpSession session) {
+        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+        if (usuarioLogado == null) {
+            return "redirect:/";
+        }
+
+        // Envia o usuário para a tela (para o menu funcionar)
+        model.addAttribute("usuario", usuarioLogado);
+
+        // Busca lista no banco e envia para a tela
+        List<Produto> listaDeProdutos = produtoService.listarTodos();
+        model.addAttribute("produtos", listaDeProdutos);
+
+        return "produtos";
+    }
+
+    // ==========================================
+    // Atualizar Produto (Rota ajustada para /editar)
+    // ==========================================
+    @PostMapping("/produtos/editar/{id}")
+    public String atualizarProduto(@PathVariable Long id, Produto produto, HttpSession session) {
+        if (session.getAttribute("usuarioLogado") == null) {
+            return "redirect:/";
+        }
+
+        produtoService.atualizarProduto(id, produto);
+        return "redirect:/produtos";
+    }
+
+    // ==========================================
+    // Deletar Produto (Rota ajustada para /excluir)
+    // ==========================================
+    @GetMapping("/produtos/excluir/{id}")
+    public String deletar(@PathVariable Long id, HttpSession session) {
+        if (session.getAttribute("usuarioLogado") == null) {
+            return "redirect:/";
+        }
+
+        produtoService.deletarProduto(id);
+        return "redirect:/produtos";
+    }
+
+    // ==========================================
+    // Lixeira e Restauração
+    // ==========================================
+    @GetMapping("/produtos/lixeira")
+    public String abrirLixeira(Model model, HttpSession session) {
+        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+        if (usuarioLogado == null) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("usuario", usuarioLogado);
+
+        // Busca apenas os deletados (ativo = false)
+        List<Produto> excluidos = produtoService.listarExcluidos();
+        model.addAttribute("produtosExcluidos", excluidos);
+
+        return "lixeira";
+    }
+
+    @GetMapping("/produtos/restaurar/{id}")
+    public String restaurar(@PathVariable Long id, HttpSession session) {
+        if (session.getAttribute("usuarioLogado") == null) {
+            return "redirect:/";
+        }
+
+        produtoService.restaurarProduto(id);
+        return "redirect:/produtos/lixeira";
+    }
+
+    // ==========================================
+    // Abrir o Estoque (Código limpo)
+    // ==========================================
+    @GetMapping("/estoque")
+    public String abrirEstoque(Model model, HttpSession session) {
+        if (session.getAttribute("usuarioLogado") == null) {
+            return "redirect:/";
+        }
+
+        // Puxa do banco e manda pro HTML uma vez só
+        List<Produto> listaDeProdutos = produtoService.listarTodos();
+        model.addAttribute("produtos", listaDeProdutos);
+
+        return "estoque";
+    }
+}
+
+
+
+
+/*
+package com.example.SweetBox.controller;
+
 //import ch.qos.logback.core.model.Model;
 import com.example.SweetBox.model.Produto;
 import com.example.SweetBox.model.Usuario;
@@ -142,3 +281,4 @@ public class ProdutoController {
 
 
 }
+*/
