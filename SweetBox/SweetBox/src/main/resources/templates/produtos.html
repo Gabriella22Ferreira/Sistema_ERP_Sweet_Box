@@ -93,57 +93,58 @@
                        oninput="filtrarProdutos()">
             </div>
 
-            <div class="grid grid-cols-lg-3 gap-2" id="listaProdutos">
-                <div class="grid-lista">
-                    <div th:if="${#lists.isEmpty(produtos)}" class="card text-center"
-                         style="grid-column: 1 / -1; padding: 3rem;">
-                        <i data-lucide="package" class="icon-xl"
-                           style="margin: 0 auto 1rem; color: var(--muted-foreground);"></i>
-                        <p style="color: var(--muted-foreground);">Nenhum produto encontrado no banco de dados.</p>
-                    </div>
 
-                    <div th:each="p : ${produtos}" class="card">
-                        <div class="flex-between mb-3">
-                            <div style="flex: 1;">
-                                <h4 style="font-weight: 600; margin-bottom: 0.25rem;" th:text="${p.nomeProduto}">Nome do
-                                    Produto</h4>
-                                <span class="badge badge-primary" th:if="${p.categoria != null}"
-                                      th:text="${p.categoria}">Categoria</span>
-                            </div>
-                            <div class="flex gap-1">
-                                <button type="button" class="btn btn-outline" style="padding: 0.5rem;"
-                                        th:onclick="abrirModalEditar([[${p.idProduto}]], [[${p.nomeProduto}]], [[${p.valorUnidade}]], [[${p.quantidadeProduto}]])">
-                                    <i data-lucide="pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline"
-                                        style="padding: 0.5rem; color: var(--destructive);"
-                                        th:onclick="'abrirModalDelete(' + ${p.idProduto} + ')'">
-                                    <i data-lucide="trash-2"></i>
-                                </button>
-                            </div>
+            <div class="grid grid-cols-lg-3 gap-1 grid-lista" id="listaProdutos">
+                <div th:if="${#lists.isEmpty(produtos)}" class="card text-center"
+                     style="grid-column: 1 / -1; padding: 3rem;">
+                    <i data-lucide="package" class="icon-xl"
+                       style="margin: 0 auto 1rem; color: var(--muted-foreground);"></i>
+                    <p style="color: var(--muted-foreground);">Nenhum produto encontrado no banco de dados.</p>
+                </div>
+
+                <div th:each="p : ${produtos}" class="card">
+                    <div class="flex-between mb-3">
+                        <div style="flex: 1;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.25rem;" th:text="${p.nomeProduto}">Nome do
+                                Produto</h4>
+                            <span class="badge badge-primary" th:if="${p.categoria != null}"
+                                  th:text="${p.categoria}">Categoria</span>
                         </div>
-                        <p style="font-size: 0.875rem; color: var(--muted-foreground); margin-bottom: 1rem;"
-                           th:text="${p.descricao}">Descrição do produto</p>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <div class="flex-between" style="font-size: 0.875rem;">
-                                <span style="color: var(--muted-foreground);">Preço:</span>
-                                <span style="font-weight: 600; color: var(--primary);"
-                                      th:text="'R$ ' + ${p.valorUnidade}">R$ 0,00</span>
-                            </div>
-                            <div class="flex-between" style="font-size: 0.875rem;">
-                                <span style="color: var(--muted-foreground);">Estoque:</span>
-                                <span style="font-weight: 600;"
-                                      th:style="${p.estoqueMin != null and p.quantidadeProduto <= p.estoqueMin} ? 'color: var(--destructive);' : 'color: var(--foreground);'"
-                                      th:text="${p.quantidadeProduto} + ' un.'">0 un.</span>
-                            </div>
-                            <div th:if="${p.estoqueMin != null and p.quantidadeProduto <= p.estoqueMin}"
-                                 class="badge badge-danger" style="width: 100%; text-align: center;">
-                                Estoque baixo!
-                            </div>
+                        <div class="flex gap-1">
+                            <button type="button" class="btn btn-outline" style="padding: 0.5rem;"
+                                    th:onclick="abrirModalEditar([[${p.idProduto}]], [[${p.nomeProduto}]], [[${p.valorUnidade}]], [[${p.quantidadeProduto}]])">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline"
+                                    style="padding: 0.5rem; color: var(--destructive);"
+                                    th:onclick="'abrirModalDelete(' + ${p.idProduto} + ')'">
+                                <i data-lucide="trash-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.875rem; color: var(--muted-foreground); margin-bottom: 1rem;"
+                       th:text="${p.descricao}">Descrição do produto</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div class="flex-between" style="font-size: 0.875rem;">
+                            <span style="color: var(--muted-foreground);">Preço:</span>
+                            <span style="font-weight: 600; color: var(--primary);"
+                                  th:text="'R$ ' + ${p.valorUnidade}">R$ 0,00</span>
+                        </div>
+                        <div class="flex-between" style="font-size: 0.875rem;">
+                            <span style="color: var(--muted-foreground);">Estoque:</span>
+                            <span style="font-weight: 600;"
+                                  th:style="${p.estoqueMin != null and p.quantidadeProduto <= p.estoqueMin} ? 'color: var(--destructive);' : 'color: var(--foreground);'"
+                                  th:text="${p.quantidadeProduto} + ' un.'">0 un.</span>
+                        </div>
+                        <div th:if="${p.estoqueMin != null and p.quantidadeProduto <= p.estoqueMin}"
+                             class="badge badge-danger" style="width: 100%; text-align: center;">
+                            Estoque baixo!
                         </div>
                     </div>
                 </div>
+                
             </div>
+
         </div>
     </main>
 </div>

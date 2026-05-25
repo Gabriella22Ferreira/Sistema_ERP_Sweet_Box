@@ -97,7 +97,7 @@
                         <input type="text" id="busca" class="form-input" placeholder="Buscar produtos..."
                                oninput="filtrarProdutos()">
                     </div>
-                    <div class="grid grid-cols-sm-2 gap-2" id="listaProdutos">
+                    <div class="grid grid-cols-sm-3 gap-1" id="listaProdutos">
                         <div class="grid-lista"
                              style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
 
@@ -143,7 +143,7 @@
                                 <span style="font-size: 1.125rem; font-weight: 600;">Total:</span>
                                 <span id="totalValor" style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">R$ 0,00</span>
                             </div>
-                            <button class="btn btn-primary" style="width: 100%;" onclick="finalizarCompra   ()">
+                            <button class="btn btn-primary" style="width: 100%;" onclick="finalizarCompra()">
                                 <i data-lucide="check" class="icon"></i> Finalizar Venda
                             </button>
                         </div>
