@@ -88,7 +88,9 @@
                     <button class="btn btn-primary" onclick="abrirModal()">
                         <i data-lucide="plus" class="icon"></i> Novo Produto
                     </button>
-                    <a href="/produtos/lixeira" class="btn btn-secondary"> Produtos Arquivados</a>
+                    <button class="btn btn-secondary" onclick="abrirModalLixeira()">
+                        <i data-lucide="archive" class="icon"></i> Produtos Arquivados
+                    </button>
                 </div>
             </div>
 
@@ -196,7 +198,69 @@
             </div>
         </form>
     </div>
+
 </div>
+
+
+
+
+
+<div class="modal-overlay" id="modalLixeira">
+    <div class="modal" style="max-width: 800px;"> <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <h3 class="modal-title">Produtos Arquivados</h3>
+        </div>
+        <button class="modal-close" onclick="fecharModalLixeira()">×</button>
+    </div>
+
+        <p style="color: var(--muted-foreground); font-size: 0.875rem; margin-bottom: 1.5rem;">
+            Estes produtos foram arquivados, mas o histórico de vendas deles permanece salvo.
+        </p>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Preço Un.</th>
+                    <th style="text-align: center;">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(produtosExcluidos)}">
+                    <td colspan="5" class="text-center" style="padding: 2rem;">
+                        <i data-lucide="inbox" class="icon-xl" style="color: var(--muted-foreground); margin: 0 auto 0.5rem;"></i>
+                        <p style="color: var(--muted-foreground);">Nenhum produto na lixeira no momento.</p>
+                    </td>
+                </tr>
+
+                <tr th:each="prod : ${produtosExcluidos}">
+                    <td th:text="${prod.idProduto}"></td>
+                    <td style="font-weight: 500; color: var(--foreground);" th:text="${prod.nomeProduto}"></td>
+                    <td>
+                        <span class="badge badge-primary" th:if="${prod.categoria != null}" th:text="${prod.categoria}"></span>
+                    </td>
+                    <td style="font-weight: 600;" th:text="'R$ ' + ${prod.valorUnidade}"></td>
+                    <td style="text-align: center;">
+                        <a th:href="@{/produtos/restaurar/{id}(id=${prod.idProduto})}" class="btn btn-outline" style="padding: 0.4rem 0.8rem; color: #10b981; border-color: rgba(16, 185, 129, 0.3);" title="Restaurar Produto">
+                            <i data-lucide="archive-restore" class="icon"></i> Restaurar
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex gap-2 mt-4" style="justify-content: flex-end;">
+            <button type="button" class="btn btn-outline" onclick="fecharModalLixeira()">Fechar</button>
+        </div>
+    </div>
+</div>
+
+
+
 
 <div class="modal-overlay" id="modalEditarProduto">
     <div class="modal">

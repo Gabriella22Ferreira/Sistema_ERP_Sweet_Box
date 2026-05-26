@@ -43,3 +43,12 @@ function abrirModalDelete(id) {
 function fecharModalDelete() {
     document.getElementById('modalDelete').classList.remove('active');
 }
+
+
+function abrirModalLixeira() {
+    document.getElementById('modalLixeira').classList.add('active');
+}
+
+function fecharModalLixeira() {
+    document.getElementById('modalLixeira').classList.remove('active');
+}

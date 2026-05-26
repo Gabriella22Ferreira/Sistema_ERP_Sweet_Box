@@ -66,12 +66,17 @@ public class ProdutoController {
         // Envia o usuário para a tela (para o menu funcionar)
         model.addAttribute("usuario", usuarioLogado);
 
-        // Busca lista no banco e envia para a tela
+        // 1. Busca lista de ATIVOS no banco e envia para os cards
         List<Produto> listaDeProdutos = produtoService.listarTodos();
         model.addAttribute("produtos", listaDeProdutos);
 
+        // 2. Busca lista de EXCLUÍDOS no banco e envia para o MODAL da lixeira
+        List<Produto> excluidos = produtoService.listarExcluidos();
+        model.addAttribute("produtosExcluidos", excluidos);
+
         return "produtos";
     }
+
 
     // ==========================================
     // Atualizar Produto (Rota ajustada para /editar)
@@ -102,6 +107,9 @@ public class ProdutoController {
     // ==========================================
     // Lixeira e Restauração
     // ==========================================
+
+
+
     @GetMapping("/produtos/lixeira")
     public String abrirLixeira(Model model, HttpSession session) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
@@ -118,6 +126,9 @@ public class ProdutoController {
         return "lixeira";
     }
 
+    // ==========================================
+    // Restauração
+    // ==========================================
     @GetMapping("/produtos/restaurar/{id}")
     public String restaurar(@PathVariable Long id, HttpSession session) {
         if (session.getAttribute("usuarioLogado") == null) {
@@ -125,7 +136,9 @@ public class ProdutoController {
         }
 
         produtoService.restaurarProduto(id);
-        return "redirect:/produtos/lixeira";
+
+        // Redireciona de volta para a página de produtos (onde está o modal)
+        return "redirect:/produtos";
     }
 
     // ==========================================
