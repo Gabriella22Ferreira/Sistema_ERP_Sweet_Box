@@ -10,25 +10,38 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-// Funções do Olho da Senha (Lógica Limpa)
-const togglePassword = document.getElementById('togglePassword');
-if (togglePassword) {
-    togglePassword.addEventListener('click', function() {
-        const senhaInput = document.getElementById('senha');
+// ==========================================
+// Funções de visibilidade de senha (Otimizado)
+// ==========================================
 
-        if (senhaInput.type === 'password') {
-            senhaInput.type = 'text';
-            // Desenha um ícone novo de "olho fechado" dentro do botão
-            this.innerHTML = '<i data-lucide="eye-off" class="icon"></i>';
-        } else {
-            senhaInput.type = 'password';
-            // Desenha o "olho normal" dentro do botão
-            this.innerHTML = '<i data-lucide="eye" class="icon"></i>';
-        }
-        // Pede ao Lucide para transformar a tag <i> que acabamos de colocar na imagem final
-        lucide.createIcons();
-    });
+function configurarToggleSenha(btnId, inputId) {
+    const btn = document.getElementById(btnId);
+    const input = document.getElementById(inputId);
+
+    if (btn && input) {
+        btn.addEventListener('click', function() {
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+
+            const icon = btn.querySelector('i');
+            if (icon) {
+                icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+                lucide.createIcons();
+            }
+        });
+    }
 }
+
+// Inicializa tudo quando a página estiver carregada
+document.addEventListener("DOMContentLoaded", function() {
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+
+    // Agora basta chamar essa função para cada campo de senha que você tiver
+    configurarToggleSenha('togglePassword', 'senha');
+    configurarToggleSenha('toggleConfirmPassword', 'confirmarSenha');
+});
 
 // Funções do Olho da Confirmação de Senha (Lógica Limpa)
 const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
