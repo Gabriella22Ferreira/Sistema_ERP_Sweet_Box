@@ -344,6 +344,7 @@ body {
 
 .form-input-icon {
   position: relative;
+  display: flex;
 }
 
 .form-input-icon input {
