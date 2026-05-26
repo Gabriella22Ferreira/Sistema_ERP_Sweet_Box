@@ -40,16 +40,15 @@ public class UsuarioController {
     @PostMapping("/cadastro")
     public String cadastrarUsuario(Usuario usuario, org.springframework.ui.Model model) {
         try {
-            // Tenta
+            // O seu UsuarioService já faz TODAS as validações com perfeição!
             usuarioService.salvarNovoUsuario(usuario);
             System.out.println("Usuário cadastrado com sucesso!");
             return "redirect:/?sucesso=true";
 
         } catch (IllegalArgumentException e) {
-            // Se rejeitar, mensagem de erro
+            // Se o service recusar (ex: senhas não batem), o erro vem parar aqui
             model.addAttribute("mensagemErro", e.getMessage());
-            // Mantém os dados para não ter que reescrever
-            model.addAttribute("usuario", usuario);
+            model.addAttribute("usuario", usuario); // Mantém os dados digitados na tela
             return "cadastro"; // Recarrega exibindo o erro
         }
     }
@@ -80,11 +79,6 @@ public class UsuarioController {
     // ==========================================
     // ROTAS DO SISTEMA (PÓS-LOGIN)
     // ==========================================
-
-
-
-
-
 
 
 

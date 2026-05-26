@@ -18,7 +18,7 @@
                     <p>Sistema de Gestão</p></div>
             </a>
             <ul class="navbar-menu" id="navMenu">
-                <nav style="display: flex; justify-content: center; gap: 0.5rem; padding-top: 1rem;">
+                <nav style="display: flex; justify-content: center; gap: 0.5rem; padding-top: 0.5rem;">
 
                     <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}"
                        th:href="@{/dashboard}"
@@ -58,7 +58,7 @@
                        style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;"
                        onmouseover="this.style.background='rgba(0,0,0,0.05)'"
                        onmouseout="this.style.background='transparent'">
-                        <i data-lucide="boxes" style="width: 20px; height: 20px;"></i>
+                        <i data-lucide="user-round-key" style="width: 20px; height: 20px;"></i>
                         <span style="font-weight: 500;">Cadastros</span>
                     </a>
 
@@ -68,11 +68,14 @@
                 </nav>
             </ul>
             <div class="navbar-user">
-                <div class="navbar-user-info" id="userInfo">
-                    <p>Gestor SweetBox</p>
-                    <span th:text="${session.usuarioLogado != null ? session.usuarioLogado.nomeCompletoUsuario : 'Usuário'}">
-                            Nome do Figma
-                        </span>
+                <<div class="navbar-user-info" id="userInfo">
+                    <p th:text="${session.usuarioLogado != null ? session.usuarioLogado.nomeCompletoUsuario : 'Usuário'}">
+                        Nome do Figma
+                    </p>
+
+                    <span th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}">Gestor SweetBox</span>
+                    <span th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'funcionario'}">Funcionário</span>
+
                 </div>
                 <div class="navbar-avatar">👤</div>
                 <button class="btn-logout" th:href="@{/logout}"><i data-lucide="log-out" class="icon"></i></button>
