@@ -37,7 +37,7 @@
                         <span style="font-weight: 500;">Vendas</span>
                     </a>
 
-                    <a th:href="@{/produtos}"
+                    <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/produtos}"
                        style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;"
                        onmouseover="this.style.background='rgba(0,0,0,0.05)'"
                        onmouseout="this.style.background='transparent'">
@@ -113,8 +113,12 @@
                 <div class="stat-card">
                     <div class="stat-card-content">
                         <div class="stat-card-info">
-                            <p class="total-vendas-display">Total de Vendas</p> <h3 id="valorVendas" th:text="${totalVendas}">0</h3> </div>
-                        ...
+                            <p class="total-vendas-display">Total de Vendas</p> <h3 id="valorVendas" th:text="${totalVendas}">0</h3>
+                        </div>
+                        <div class="stat-card-icon"
+                             style="background: linear-gradient(135deg, var(--destructive), var(--accent));">
+                            <i data-lucide="shopping-cart" class="icon-lg"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -124,7 +128,11 @@
                             <p class="receita-total-display">Receita Total</p>
                             <h3>R$ <span th:text="${#numbers.formatDecimal(receitaTotal, 1, 'POINT', 2, 'COMMA')}">0,00</span></h3>
                         </div>
-                        ...
+                        <div class="stat-card-icon"
+                             style="background: linear-gradient(135deg, var(--destructive), var(--accent));">
+                            <i data-lucide="reding-up" class="icon-lg"></i>
+                        </div>
+
                     </div>
                 </div>
 
