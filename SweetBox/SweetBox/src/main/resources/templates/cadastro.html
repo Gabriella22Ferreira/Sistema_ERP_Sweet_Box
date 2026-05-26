@@ -118,6 +118,8 @@
     <script>
         lucide.createIcons();
 
+
+
         // Se a página recarregar por erro, mantém o botão que o usuário clicou ativo
         window.addEventListener('DOMContentLoaded', () => {
             const selecionado = document.querySelector('input[name="tipoUsuario"]:checked');
@@ -127,27 +129,75 @@
         });
 
 
-        document.getElementById('senha').addEventListener('input', function() {
-          const senha = this.value;
-          const container = document.getElementById('requisitosContainer');
-          if (senha) {
-              container.style.display = 'block';
-              const requisitos = validarSenhaForte(senha);
-              for (const [key, value] of Object.entries(requisitos)) {
+        function marcarBotaoJava(tipo) {
+            // Pega os dois elementos <label> que funcionam como botões
+            const btnGestor = document.getElementById('btnGestor');
+            const btnFuncionario = document.getElementById('btnFuncionario');
 
+            // 1. Reseta ambos para o estado "desmarcado" (outline)
+            btnGestor.classList.remove('btn-primary');
+            btnGestor.classList.add('btn-outline');
+
+            btnFuncionario.classList.remove('btn-primary');
+            btnFuncionario.classList.add('btn-outline');
+
+            // 2. Aplica a cor de botão "marcado" (primary) apenas ao que foi clicado
+            if (tipo === 'gestor') {
+                btnGestor.classList.remove('btn-outline');
+                btnGestor.classList.add('btn-primary');
+            } else if (tipo === 'funcionario') {
+                btnFuncionario.classList.remove('btn-outline');
+                btnFuncionario.classList.add('btn-primary');
+            }
+        }
+
+        // 1. Função que testa as regras da senha usando Regex
+        function validarSenhaForte(senha) {
+            return {
+                tamanho: senha.length >= 8,
+                maiuscula: /[A-Z]/.test(senha), // Tem pelo menos uma letra maiúscula
+                minuscula: /[a-z]/.test(senha), // Tem pelo menos uma letra minúscula
+                numero: /[0-9]/.test(senha),    // Tem pelo menos um número
+                especial: /[!@#$%^&*]/.test(senha) // Tem pelo menos um caractere especial
+            };
+        }
+
+        // 2. O evento corrigido para lidar com a troca de ícones do Lucide
+        document.getElementById('senha').addEventListener('input', function() {
+            const senha = this.value;
+            const container = document.getElementById('requisitosContainer');
+
+            // Mapeamento dos textos exatos que estão no seu HTML
+            const textosRequisitos = {
+                tamanho: "Mínimo 8 caracteres",
+                maiuscula: "Letra maiúscula",
+                minuscula: "Letra minúscula",
+                numero: "Número",
+                especial: "Caractere especial (!@#$%^&*)"
+            };
+
+            if (senha) {
+                container.style.display = 'block';
+                const requisitos = validarSenhaForte(senha);
+
+                for (const [key, value] of Object.entries(requisitos)) {
                     const elem = document.getElementById('req-' + key);
-                    const icon = elem.querySelector('i');
+
+                    // Injetamos um novo <i> no HTML para que o Lucide possa convertê-lo novamente
                     if (value) {
-                        elem.style.color = '#10b981';
-                        icon.setAttribute('data-lucide', 'check-circle');
+                        elem.style.color = '#10b981'; // Verde de sucesso
+                        elem.innerHTML = `<i data-lucide="check-circle" class="icon" style="width: 16px; height: 16px;"></i> ${textosRequisitos[key]}`;
                     } else {
-                        elem.style.color = 'var(--muted-foreground)';
-                        icon.setAttribute('data-lucide', 'circle');
+                        elem.style.color = 'var(--muted-foreground)'; // Cor padrão
+                        elem.innerHTML = `<i data-lucide="circle" class="icon" style="width: 16px; height: 16px;"></i> ${textosRequisitos[key]}`;
                     }
-              }
-              lucide.createIcons();
-           } else{
-             container.style.display = 'none';
+                }
+
+                // Pede para o Lucide ler a tela novamente e transformar os novos <i> em <svg>
+                lucide.createIcons();
+
+            } else {
+                container.style.display = 'none';
             }
         });
     </script>
