@@ -4,7 +4,6 @@ import com.example.SweetBox.model.Produto;
 import com.example.SweetBox.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -13,7 +12,22 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    // Regra para Salvar
+    public List<Produto> listarTodos() {
+        return produtoRepository.findByAtivoTrue();
+    }
+
+    public void darBaixaEstoque(Long id, Integer quantidadeVendida) {
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+
+        if (produto.getQuantidadeProduto() < quantidadeVendida) {
+            throw new IllegalArgumentException("Estoque insuficiente para o produto: " + produto.getNomeProduto());
+        }
+
+        produto.setQuantidadeProduto(produto.getQuantidadeProduto() - quantidadeVendida);
+        produtoRepository.save(produto);
+    }
+
     public void salvarNovoProduto(Produto produto) {
         if (produto.getNomeProduto() == null || produto.getNomeProduto().trim().isEmpty()) {
             throw new IllegalArgumentException("O nome do produto não pode estar vazio!");
@@ -24,57 +38,35 @@ public class ProdutoService {
         if (produto.getQuantidadeProduto() == null || produto.getQuantidadeProduto() < 0) {
             throw new IllegalArgumentException("A quantidade em estoque não pode ser negativa!");
         }
-
         produtoRepository.save(produto);
     }
 
-    // Regra para Listar todos na tabela
-    public List<Produto> listarTodos() {
-        // Antes estava repository.findAll();
-        // Agora ele puxa só os ativos:
-        return produtoRepository.findByAtivoTrue();
-    }
-
-    // BUSCAR POR ID (editar)
     public Produto buscarPorId(Long id) {
         return produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
     }
 
     public void deletarProduto(Long id) {
-        // Busca o produto, muda para inativo (ativo = false) e salva de novo!
-        Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
-
+        Produto produto = buscarPorId(id);
         produto.setAtivo(false);
         produtoRepository.save(produto);
     }
 
     public Produto atualizarProduto(Long id, Produto produtoAtualizado) {
-
-        Produto produtoExistente = produtoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
-
+        Produto produtoExistente = buscarPorId(id);
         produtoExistente.setNomeProduto(produtoAtualizado.getNomeProduto());
         produtoExistente.setValorUnidade(produtoAtualizado.getValorUnidade());
         produtoExistente.setQuantidadeProduto(produtoAtualizado.getQuantidadeProduto());
-
         return produtoRepository.save(produtoExistente);
     }
 
-
-    // Metodo para listar os produtos na lixeira
     public List<Produto> listarExcluidos() {
         return produtoRepository.findByAtivoFalse();
     }
 
-    // Metodo para trazer o produto de volta à vida
     public void restaurarProduto(Long id) {
-        Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
-
-        produto.setAtivo(true); // Muda para true de novo
-        produtoRepository.save(produto); // Salva no banco
+        Produto produto = buscarPorId(id);
+        produto.setAtivo(true);
+        produtoRepository.save(produto);
     }
-
 }
