@@ -53,10 +53,26 @@ public class ProdutoService {
     }
 
     public Produto atualizarProduto(Long id, Produto produtoAtualizado) {
+        // 1. Validação: Impede campos vazios antes de tocar no banco
+        if (produtoAtualizado.getNomeProduto() == null || produtoAtualizado.getNomeProduto().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do produto não pode estar vazio!");
+        }
+        if (produtoAtualizado.getValorUnidade() == null || produtoAtualizado.getValorUnidade() < 0) {
+            throw new IllegalArgumentException("O preço deve ser um valor válido!");
+        }
+        if (produtoAtualizado.getQuantidadeProduto() == null || produtoAtualizado.getQuantidadeProduto() < 0) {
+            throw new IllegalArgumentException("A quantidade não pode ser negativa!");
+        }
+
+        // 2. Busca o produto existente
         Produto produtoExistente = buscarPorId(id);
+
+        // 3. Atualiza os dados apenas se passaram pela validação
         produtoExistente.setNomeProduto(produtoAtualizado.getNomeProduto());
         produtoExistente.setValorUnidade(produtoAtualizado.getValorUnidade());
         produtoExistente.setQuantidadeProduto(produtoAtualizado.getQuantidadeProduto());
+
+        // 4. Salva com segurança
         return produtoRepository.save(produtoExistente);
     }
 

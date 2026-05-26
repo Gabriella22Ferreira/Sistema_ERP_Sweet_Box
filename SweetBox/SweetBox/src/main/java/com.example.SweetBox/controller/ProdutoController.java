@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import com.example.SweetBox.model.Movimentacao;
 import com.example.SweetBox.repository.MovimentacaoRepository;
 import java.time.LocalDateTime;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,20 +60,15 @@ public class ProdutoController {
     @GetMapping("/produtos")
     public String abrirProdutos(Model model, HttpSession session) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+
+        // CORREÇÃO: Redirecionar para a página inicial (login) em vez de carregar a tela vazia
         if (usuarioLogado == null) {
             return "redirect:/";
         }
 
-        // Envia o usuário para a tela (para o menu funcionar)
         model.addAttribute("usuario", usuarioLogado);
-
-        // 1. Busca lista de ATIVOS no banco e envia para os cards
-        List<Produto> listaDeProdutos = produtoService.listarTodos();
-        model.addAttribute("produtos", listaDeProdutos);
-
-        // 2. Busca lista de EXCLUÍDOS no banco e envia para o MODAL da lixeira
-        List<Produto> excluidos = produtoService.listarExcluidos();
-        model.addAttribute("produtosExcluidos", excluidos);
+        model.addAttribute("produtos", produtoService.listarTodos());
+        model.addAttribute("produtosExcluidos", produtoService.listarExcluidos());
 
         return "produtos";
     }
@@ -82,12 +78,20 @@ public class ProdutoController {
     // Atualizar Produto (Rota ajustada para /editar)
     // ==========================================
     @PostMapping("/produtos/editar/{id}")
-    public String atualizarProduto(@PathVariable Long id, Produto produto, HttpSession session) {
+    public String atualizarProduto(@PathVariable Long id, Produto produto,
+                                   HttpSession session, RedirectAttributes ra) {
         if (session.getAttribute("usuarioLogado") == null) {
             return "redirect:/";
         }
 
-        produtoService.atualizarProduto(id, produto);
+        try {
+            produtoService.atualizarProduto(id, produto);
+            ra.addFlashAttribute("mensagemSucesso", "Produto atualizado com sucesso!");
+        } catch (IllegalArgumentException e) {
+            // Envia a mensagem de erro para ser exibida no front-end
+            ra.addFlashAttribute("mensagemErro", e.getMessage());
+        }
+
         return "redirect:/produtos";
     }
 
@@ -95,12 +99,16 @@ public class ProdutoController {
     // Deletar Produto (Rota ajustada para /excluir)
     // ==========================================
     @GetMapping("/produtos/excluir/{id}")
-    public String deletar(@PathVariable Long id, HttpSession session) {
+    public String deletar(@PathVariable Long id, HttpSession session, RedirectAttributes ra) {
         if (session.getAttribute("usuarioLogado") == null) {
             return "redirect:/";
         }
 
         produtoService.deletarProduto(id);
+
+        // Adicione esta linha para enviar a mensagem:
+        ra.addFlashAttribute("mensagemSucesso", "Produto movido para a lixeira com sucesso!");
+
         return "redirect:/produtos";
     }
 

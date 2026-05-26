@@ -53,7 +53,11 @@
                         <span style="font-weight: 500;">Estoque</span>
                     </a>
 
-                    <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}" th:href="@{/cadastro}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                    <a th:if="${session.usuarioLogado != null && session.usuarioLogado.tipoUsuario == 'gestor'}"
+                       th:href="@{/cadastro}"
+                       style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; text-decoration: none; color: var(--foreground); border-radius: 8px; transition: background 0.2s;"
+                       onmouseover="this.style.background='rgba(0,0,0,0.05)'"
+                       onmouseout="this.style.background='transparent'">
                         <i data-lucide="user-round-key" style="width: 20px; height: 20px;"></i>
                         <span style="font-weight: 500;">Cadastros</span>
                     </a>
@@ -84,6 +88,10 @@
                 <div>
                     <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Produtos</h2>
                     <p style="color: var(--muted-foreground);">Gerencie seu estoque de doces</p>
+                </div>
+                <div th:if="${mensagemSucesso}" id="alertaSucesso"
+                     style="background-color: #dcfce7; color: #166534; padding: 12px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #bbf7d0;">
+                    <p th:text="${mensagemSucesso}" style="margin: 0; font-weight: 500;"></p>
                 </div>
                 <div class="flex gap-2">
                     <button class="btn btn-primary" onclick="abrirModal()">
@@ -149,7 +157,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
 
         </div>
@@ -203,16 +211,14 @@
 </div>
 
 
-
-
-
 <div class="modal-overlay" id="modalLixeira">
-    <div class="modal" style="max-width: 800px;"> <div class="modal-header">
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <h3 class="modal-title">Produtos Arquivados</h3>
+    <div class="modal" style="max-width: 800px;">
+        <div class="modal-header">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <h3 class="modal-title">Produtos Arquivados</h3>
+            </div>
+            <button class="modal-close" onclick="fecharModalLixeira()">×</button>
         </div>
-        <button class="modal-close" onclick="fecharModalLixeira()">×</button>
-    </div>
 
         <p style="color: var(--muted-foreground); font-size: 0.875rem; margin-bottom: 1.5rem;">
             Estes produtos foram arquivados, mas o histórico de vendas deles permanece salvo.
@@ -232,7 +238,8 @@
                 <tbody>
                 <tr th:if="${#lists.isEmpty(produtosExcluidos)}">
                     <td colspan="5" class="text-center" style="padding: 2rem;">
-                        <i data-lucide="inbox" class="icon-xl" style="color: var(--muted-foreground); margin: 0 auto 0.5rem;"></i>
+                        <i data-lucide="inbox" class="icon-xl"
+                           style="color: var(--muted-foreground); margin: 0 auto 0.5rem;"></i>
                         <p style="color: var(--muted-foreground);">Nenhum produto na lixeira no momento.</p>
                     </td>
                 </tr>
@@ -241,11 +248,14 @@
                     <td th:text="${prod.idProduto}"></td>
                     <td style="font-weight: 500; color: var(--foreground);" th:text="${prod.nomeProduto}"></td>
                     <td>
-                        <span class="badge badge-primary" th:if="${prod.categoria != null}" th:text="${prod.categoria}"></span>
+                        <span class="badge badge-primary" th:if="${prod.categoria != null}"
+                              th:text="${prod.categoria}"></span>
                     </td>
                     <td style="font-weight: 600;" th:text="'R$ ' + ${prod.valorUnidade}"></td>
                     <td style="text-align: center;">
-                        <a th:href="@{/produtos/restaurar/{id}(id=${prod.idProduto})}" class="btn btn-outline" style="padding: 0.4rem 0.8rem; color: #10b981; border-color: rgba(16, 185, 129, 0.3);" title="Restaurar Produto">
+                        <a th:href="@{/produtos/restaurar/{id}(id=${prod.idProduto})}" class="btn btn-outline"
+                           style="padding: 0.4rem 0.8rem; color: #10b981; border-color: rgba(16, 185, 129, 0.3);"
+                           title="Restaurar Produto">
                             <i data-lucide="archive-restore" class="icon"></i> Restaurar
                         </a>
                     </td>
@@ -261,28 +271,36 @@
 </div>
 
 
-
-
-<div class="modal-overlay" id="modalEditarProduto">
+<div class="modal-overlay" id="modalEditarProduto" th:classappend="${mensagemErro != null} ? 'active' : ''">
     <div class="modal">
         <div class="modal-header">
             <h3 class="modal-title">Editar Produto</h3>
             <button class="modal-close" onclick="fecharModalEditar()">×</button>
         </div>
-        <form id="formEditarProduto" method="POST">
-            <input type="hidden" id="editId">
+
+        <div th:if="${mensagemErro}"
+             style="background-color: #fee2e2; color: #b91c1c; padding: 12px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #f87171;">
+            <p th:text="${mensagemErro}" style="margin: 0; font-weight: 500;"></p>
+        </div>
+
+        <form id="formEditarProduto" method="POST" th:action="@{/produtos/editar/0}"
+              onsubmit="this.action = '/produtos/editar/' + document.getElementById('editId').value">
+
+            <input type="hidden" id="editId" name="idProduto">
+
             <div class="form-group">
-                <label>Nome</label>
-                <input type="text" name="nomeProduto" id="editNome" class="form-input">
+                <label>Nome *</label>
+                <input type="text" name="nomeProduto" id="editNome" class="form-input" required>
             </div>
             <div class="form-group">
-                <label>Preço</label>
-                <input type="number" name="valorUnidade" id="editPreco" class="form-input" step="0.01">
+                <label>Preço *</label>
+                <input type="number" name="valorUnidade" id="editPreco" class="form-input" step="0.01" required>
             </div>
             <div class="form-group">
-                <label>Quantidade</label>
-                <input type="number" name="quantidadeProduto" id="editQuantidade" class="form-input">
+                <label>Quantidade *</label>
+                <input type="number" name="quantidadeProduto" id="editQuantidade" class="form-input" required>
             </div>
+
             <div class="flex gap-2 mt-4">
                 <button type="button" class="btn btn-outline" onclick="fecharModalEditar()">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Salvar</button>
@@ -325,6 +343,25 @@
             }
         });
     }
+</script>
+
+<script>
+    // Aguarda o carregamento total da página
+    window.addEventListener('load', function() {
+        const alerta = document.getElementById('alertaSucesso');
+        if (alerta) {
+            // Define o tempo para sumir (4000ms = 4 segundos)
+            setTimeout(function() {
+                alerta.style.transition = "opacity 0.5s ease";
+                alerta.style.opacity = "0";
+
+                // Remove do DOM após a transição de opacidade terminar
+                setTimeout(function() {
+                    alerta.style.display = 'none';
+                }, 500);
+            }, 4000);
+        }
+    });
 </script>
 
 </body>
