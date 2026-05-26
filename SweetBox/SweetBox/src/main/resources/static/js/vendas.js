@@ -3,6 +3,7 @@
 // ==========================================
 
 let carrinho = [];
+let todasAsVendas = []; // Guarda o histórico completo para podermos filtrar por data
 
 function adicionarAoCarrinho(id, nome, preco) {
     const itemExistente = carrinho.find(item => item.id === id);
@@ -33,9 +34,9 @@ function atualizarVisualDoCarrinho() {
                 <div>
                     <h5 style="margin: 0 0 0.25rem 0; font-size: 0.95rem;">${item.nome}</h5>
                     <div style="font-size: 0.8rem; color: var(--primary);">
-                        <button onclick="ajustarQuantidade(${item.id}, -1)" style="border:none; cursor:pointer;">➖</button>
+                        <button onclick="ajustarQuantidade(${item.id}, -1)" style="border:none; cursor:pointer; background:none;">➖</button>
                         ${item.quantidade}x R$ ${item.preco.toFixed(2)}
-                        <button onclick="ajustarQuantidade(${item.id}, 1)" style="border:none; cursor:pointer;">➕</button>
+                        <button onclick="ajustarQuantidade(${item.id}, 1)" style="border:none; cursor:pointer; background:none;">➕</button>
                     </div>
                 </div>
                 <div style="font-weight: 600; color: var(--primary);">R$ ${subtotal.toFixed(2)}</div>
@@ -79,7 +80,9 @@ function finalizarCompra() {
     });
 }
 
-// Funções do Histórico
+// ==========================================
+// Funções do Histórico com Filtro de Data
+// ==========================================
 function abrirHistorico() {
     const modal = document.getElementById('modalHistorico');
     const conteudo = document.getElementById('historicoConteudo');
@@ -95,39 +98,75 @@ function abrirHistorico() {
             return response.json();
         })
         .then(vendas => {
-            if (vendas.length === 0) {
-                conteudo.innerHTML = '<p style="text-align: center; padding: 2rem; color: var(--muted-foreground);">Nenhuma venda registrada até o momento.</p>';
-                return;
-            }
+            todasAsVendas = vendas; // Salva a lista completa na variável global
 
-            conteudo.innerHTML = vendas.map(venda => `
-                <div style="background: #fff; padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); color: #000;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-weight: 600;">
-                        <span>Venda #${venda.id}</span>
-                        <span style="color: var(--primary);">R$ ${venda.valorTotal.toFixed(2)}</span>
-                    </div>
-                    <div style="font-size: 0.85rem; color: gray; margin-bottom: 0.75rem;">
-                        <div>Horário: ${venda.dataHora}</div>
-                        <div>Caixa: ${venda.vendedor}</div>
-                    </div>
-                    <div style="border-top: 1px dashed #eee; padding-top: 0.5rem;">
-                        <h6 style="margin: 0 0 0.25rem 0; font-size: 0.85rem; font-weight: 600;">Itens Registrados:</h6>
-                        <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.85rem; color: #333; list-style-type: disc;">
-                            ${venda.produtos.map(p => `<li>${p}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-            `).join('');
+            // Pega a data exata de hoje no Brasil (ajustando o fuso horário para evitar bugs)
+            const hoje = new Date();
+            const dataISO = new Date(hoje.getTime() - (hoje.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+
+            // Chama a renderização já com a data de hoje aplicada
+            renderizarHistorico(dataISO);
         })
         .catch(error => {
             conteudo.innerHTML = '<p style="text-align: center; padding: 1rem; color: red;">Não foi possível carregar as informações.</p>';
         });
 }
 
+// Função que desenha os cards filtrando pela data escolhida
+function renderizarHistorico(dataSelecionadaISO) {
+    const conteudo = document.getElementById('historicoConteudo');
+
+    // Converte a data do calendário (YYYY-MM-DD) para o formato brasileiro (DD/MM/YYYY)
+    const [ano, mes, dia] = dataSelecionadaISO.split('-');
+    const dataBR = `${dia}/${mes}/${ano}`;
+
+    // Filtra as vendas (checa os dois formatos de data para garantir compatibilidade)
+    const vendasDoDia = todasAsVendas.filter(venda =>
+        venda.dataHora.includes(dataBR) || venda.dataHora.includes(dataSelecionadaISO)
+    );
+
+    // Cria a barrinha do calendário no topo
+    let html = `
+        <div style="margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; background: var(--muted, #f8f9fa); padding: 0.75rem 1rem; border-radius: 8px;">
+            <label style="font-weight: 600; color: var(--foreground); font-size: 0.9rem;">Vendas do dia:</label>
+            <input type="date" value="${dataSelecionadaISO}" onchange="renderizarHistorico(this.value)" class="form-input" style="width: auto; padding: 0.25rem 0.5rem; font-size: 0.9rem; border: 1px solid var(--border); border-radius: 4px;">
+        </div>
+    `;
+
+    if (vendasDoDia.length === 0) {
+        html += `<p style="text-align: center; padding: 2rem; color: var(--muted-foreground);">Nenhuma venda registrada para esta data.</p>`;
+    } else {
+        html += vendasDoDia.map(venda => `
+            <div style="background: #fff; padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); color: #000;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-weight: 600;">
+                    <span>Venda #${venda.id}</span>
+                    <span style="color: var(--primary);">R$ ${venda.valorTotal.toFixed(2)}</span>
+                </div>
+                <div style="font-size: 0.85rem; color: gray; margin-bottom: 0.75rem;">
+                    <div>Horário: ${venda.dataHora}</div>
+                    <div>Caixa: ${venda.vendedor}</div>
+                </div>
+                <div style="border-top: 1px dashed #eee; padding-top: 0.5rem;">
+                    <h6 style="margin: 0 0 0.25rem 0; font-size: 0.85rem; font-weight: 600;">Itens Registrados:</h6>
+                    <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.85rem; color: #333; list-style-type: disc;">
+                        ${venda.produtos.map(p => `<li>${p}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    conteudo.innerHTML = html;
+}
+
 function fecharHistorico() {
     const modal = document.getElementById('modalHistorico');
     if (modal) modal.style.display = 'none';
 }
+
+// ==========================================
+// Funções Auxiliares do Carrinho
+// ==========================================
 
 // Aumenta ou diminui a quantidade de um item específico
 function ajustarQuantidade(id, delta) {
