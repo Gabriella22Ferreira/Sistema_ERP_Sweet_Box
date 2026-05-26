@@ -29,15 +29,28 @@ function atualizarVisualDoCarrinho() {
         totalDaVenda += subtotal;
 
         divItens.innerHTML += `
-            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">
                 <div>
                     <h5 style="margin: 0 0 0.25rem 0; font-size: 0.95rem;">${item.nome}</h5>
-                    <div style="font-size: 0.8rem; color: gray;">${item.quantidade}x R$ ${item.preco.toFixed(2)}</div>
+                    <div style="font-size: 0.8rem; color: var(--primary);">
+                        <button onclick="ajustarQuantidade(${item.id}, -1)" style="border:none; cursor:pointer;">➖</button>
+                        ${item.quantidade}x R$ ${item.preco.toFixed(2)}
+                        <button onclick="ajustarQuantidade(${item.id}, 1)" style="border:none; cursor:pointer;">➕</button>
+                    </div>
                 </div>
                 <div style="font-weight: 600; color: var(--primary);">R$ ${subtotal.toFixed(2)}</div>
             </div>
         `;
     });
+
+    // Se o carrinho tiver itens, adiciona o botão de limpar no final
+    if (carrinho.length > 0) {
+        divItens.innerHTML += `
+            <button onclick="limparCarrinho()" style="width: 100%; padding: 0.5rem; background: #ffe6e6; color: #d9534f; border: 1px solid #d9534f; border-radius: 4px; cursor: pointer;">
+                Limpar Carrinho
+            </button>
+        `;
+    }
 
     spanTotal.textContent = 'R$ ' + totalDaVenda.toFixed(2);
     if (footer) footer.style.display = carrinho.length > 0 ? 'block' : 'none';
@@ -114,4 +127,23 @@ function abrirHistorico() {
 function fecharHistorico() {
     const modal = document.getElementById('modalHistorico');
     if (modal) modal.style.display = 'none';
+}
+
+// Aumenta ou diminui a quantidade de um item específico
+function ajustarQuantidade(id, delta) {
+    const item = carrinho.find(item => item.id === id);
+    if (item) {
+        item.quantidade += delta;
+        // Se a quantidade chegar a 0, remove o item do carrinho
+        if (item.quantidade <= 0) {
+            carrinho = carrinho.filter(item => item.id !== id);
+        }
+        atualizarVisualDoCarrinho();
+    }
+}
+
+// Limpa o carrinho todo
+function limparCarrinho() {
+    carrinho = [];
+    atualizarVisualDoCarrinho();
 }
