@@ -164,15 +164,15 @@
     </main>
 </div>
 
-<div class="modal-overlay" id="modalProduto" th:classappend="${mensagemErro != null} ? 'active' : ''">
+<div class="modal-overlay" id="modalProduto" th:classappend="${erroCadastro != null} ? 'active' : ''">
     <div class="modal">
         <div class="modal-header">
             <h3 class="modal-title" id="modalTitulo">Novo Produto</h3>
             <button class="modal-close" onclick="fecharModal()">×</button>
         </div>
         <form id="produtoForm" method="POST" th:action="@{/produtos/cadastrar}" novalidate>
-            <div th:if="${mensagemErro}" style="color: red; margin-bottom: 1rem; font-weight: bold;">
-                <p th:text="${mensagemErro}"></p>
+            <div th:if="${erroCadastro}" style="color: red; margin-bottom: 1rem; font-weight: bold;">
+                <p th:text="${erroCadastro}"></p>
             </div>
             <div class="form-group">
                 <label class="form-label">Nome *</label>
@@ -271,16 +271,16 @@
 </div>
 
 
-<div class="modal-overlay" id="modalEditarProduto" th:classappend="${mensagemErro != null} ? 'active' : ''">
+<div class="modal-overlay" id="modalEditarProduto" th:classappend="${erroEdicao != null} ? 'active' : ''">
     <div class="modal">
         <div class="modal-header">
             <h3 class="modal-title">Editar Produto</h3>
             <button class="modal-close" onclick="fecharModalEditar()">×</button>
         </div>
 
-        <div th:if="${mensagemErro}"
+        <div th:if="${erroEdicao}"
              style="background-color: #fee2e2; color: #b91c1c; padding: 12px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #f87171;">
-            <p th:text="${mensagemErro}" style="margin: 0; font-weight: 500;"></p>
+            <p th:text="${erroEdicao}" style="margin: 0; font-weight: 500;"></p>
         </div>
 
         <form id="formEditarProduto" method="POST" th:action="@{/produtos/editar/0}"

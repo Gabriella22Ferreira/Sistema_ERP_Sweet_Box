@@ -47,7 +47,7 @@ public class ProdutoController {
 
         } catch (IllegalArgumentException e) {
             // O RedirectAttributes guarda a mensagem para a próxima página
-            ra.addFlashAttribute("mensagemErro", e.getMessage());
+            ra.addFlashAttribute("erroCadastro", e.getMessage());
 
             // Redireciona para a página principal.
             // Como o seu HTML tem o th:classappend, o modal abrirá automaticamente!
@@ -91,7 +91,7 @@ public class ProdutoController {
             ra.addFlashAttribute("mensagemSucesso", "Produto atualizado com sucesso!");
         } catch (IllegalArgumentException e) {
             // Envia a mensagem de erro para ser exibida no front-end
-            ra.addFlashAttribute("mensagemErro", e.getMessage());
+            ra.addFlashAttribute("erroEdicao", e.getMessage());
         }
 
         return "redirect:/produtos";
