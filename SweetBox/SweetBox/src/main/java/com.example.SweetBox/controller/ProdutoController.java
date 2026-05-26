@@ -35,21 +35,23 @@ public class ProdutoController {
     // Cadastro de produtos
     // ==========================================
     @PostMapping("/produtos/cadastrar")
-    public String cadastrarProduto(Produto produto, Model model, HttpSession session) {
+    public String cadastrarProduto(Produto produto, RedirectAttributes ra, HttpSession session) {
         if(session.getAttribute("usuarioLogado") == null) {
             return "redirect:/";
         }
 
-        try{
+        try {
             produtoService.salvarNovoProduto(produto);
-            System.out.println("Produto salvo com sucesso!");
-            return "redirect:/produtos?sucesso=true";
+            ra.addFlashAttribute("mensagemSucesso", "Produto cadastrado com sucesso!");
+            return "redirect:/produtos";
 
-        }  catch (IllegalArgumentException e) {
-            // Se der erro de validação
-            model.addAttribute("mensagemErro", e.getMessage());
-            model.addAttribute("produtos", produtoService.listarTodos());
-            return "produtos";
+        } catch (IllegalArgumentException e) {
+            // O RedirectAttributes guarda a mensagem para a próxima página
+            ra.addFlashAttribute("mensagemErro", e.getMessage());
+
+            // Redireciona para a página principal.
+            // Como o seu HTML tem o th:classappend, o modal abrirá automaticamente!
+            return "redirect:/produtos";
         }
     }
 
