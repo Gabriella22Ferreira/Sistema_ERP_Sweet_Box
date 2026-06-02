@@ -72,7 +72,7 @@ public class ProdutoService {
         produtoExistente.setValorUnidade(produtoAtualizado.getValorUnidade());
         produtoExistente.setQuantidadeProduto(produtoAtualizado.getQuantidadeProduto());
 
-        // 4. Salva com segurança
+        // 4. Salva
         return produtoRepository.save(produtoExistente);
     }
 

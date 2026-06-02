@@ -15,12 +15,12 @@ public class UsuarioService {
     public void salvarNovoUsuario(Usuario usuario) {
 
 
-    // 1. Validação do Nome
+        // Nome
         if (usuario.getNomeCompletoUsuario() == null || usuario.getNomeCompletoUsuario().trim().isEmpty()) {
             throw new IllegalArgumentException("O nome não pode estar vazio!");
         }
 
-        // 2. Validação do Email (Não vazio, precisa conter '@' e não pode ser repetido)
+        // email
         if (usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
             throw new IllegalArgumentException("O e-mail não pode estar vazio!");
         }
@@ -31,7 +31,7 @@ public class UsuarioService {
             throw new IllegalArgumentException("Este e-mail já está cadastrado!");
         }
 
-        // 3. Validação das Senhas Iguais
+        // Senhas Iguais
         if (usuario.getSenha() == null || usuario.getConfirmacaoSenha() == null) {
             throw new IllegalArgumentException("A senha e a confirmação são obrigatórias!");
         }
@@ -39,7 +39,7 @@ public class UsuarioService {
             throw new IllegalArgumentException("A senha e a confirmação de senha não são iguais!");
         }
 
-        // 4. Requisitos da Senha (Mínimo 8 caracteres, Maiúscula, Minúscula, Número e Especial)
+        // 4. Requisitos da Senha
         String senha = usuario.getSenha();
 
         if (senha.length() < 8) {
@@ -58,7 +58,7 @@ public class UsuarioService {
             throw new IllegalArgumentException("A senha deve conter pelo menos um caractere especial (!@#$%^&*)!");
         }
 
-        // 5. Validação do Tipo de Usuário (Gestor ou Funcionário)
+        // Tipo de Usuário (Gestor ou Funcionário)
         if (usuario.getTipoUsuario() == null || usuario.getTipoUsuario().isEmpty()) {
             throw new IllegalArgumentException("Você precisa selecionar se é Gestor ou Funcionário!");
         }
@@ -69,20 +69,20 @@ public class UsuarioService {
 
     // Método de Login
     public Usuario autenticarUsuario(String email, String senha) {
-        // 1. Vai no banco e tenta achar o usuário com esse e-mail
+        // tenta achar o usuário com esse e-mail
         Usuario usuarioEncontrado = usuarioRepository.findByEmail(email);
 
-        // 2. Verifica se o usuário existe
+        // se o usuário existe
         if (usuarioEncontrado == null) {
             throw new IllegalArgumentException("E-mail não cadastrado no sistema!");
         }
 
-        // 3. Verifica se a senha está correta
+        // a senha está correta
         if (!usuarioEncontrado.getSenha().equals(senha)) {
             throw new IllegalArgumentException("Senha incorreta!");
         }
 
-        // Se deu tudo certo, devolve o usuário logado
+        // Se deu tudo certo
         return usuarioEncontrado;
     }
 }

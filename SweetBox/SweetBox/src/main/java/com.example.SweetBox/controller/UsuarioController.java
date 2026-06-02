@@ -24,7 +24,7 @@ public class UsuarioController {
     private ProdutoService produtoService;
 
     // ==========================================
-    // ROTAS DE TELA INICIAL E CADASTRO
+    // ROTAS DE TELA INICIAL E CADASTROO
     // ==========================================
 
     @GetMapping("/")
@@ -76,17 +76,12 @@ public class UsuarioController {
         }
     }
 
-    // ==========================================
-    // ROTAS DO SISTEMA (PÓS-LOGIN)
-    // ==========================================
-
-
 
     // ==========================================
     // ROTAS DE LOGOUT (Sair do Sistema)
     // ==========================================
 
-    // Captura quando o botão envia um comando POST em segundo plano
+    // botão envia um comando POST em segundo plano
     @PostMapping("/logout")
     public String realizarLogoutPost(HttpSession session) {
         if (session != null) {
@@ -95,7 +90,7 @@ public class UsuarioController {
         return "redirect:/"; // Redireciona para a tela inicial/login
     }
 
-    // Captura se o usuário for deslogado via link GET direto ou barra de endereços
+    // o usuário for deslogado via link GET direto ou barra de endereços
     @GetMapping("/logout")
     public String realizarLogoutGet(HttpSession session) {
         if (session != null) {
